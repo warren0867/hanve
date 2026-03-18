@@ -210,6 +210,27 @@ body{font-family:-apple-system,'Pretendard',sans-serif;font-size:14px;background
 .phdel{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:3px;margin-left:auto;border-radius:6px}
 .phdel:hover{color:var(--red);background:var(--red-bg)}
 .empty{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:13px}
+/* 문법 */
+.gr-toolbar{display:flex;gap:8px;padding:10px 12px;background:var(--bg);border-bottom:0.5px solid var(--border);flex-shrink:0;flex-wrap:wrap;align-items:center}
+.gr-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:14px 16px}
+.gr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.gr-title{font-size:16px;font-weight:700;color:var(--purple)}
+.gr-lv{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--purple-bg);color:var(--purple);font-weight:600;flex-shrink:0;margin-top:2px}
+.gr-meaning{font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.6}
+.gr-vn{font-size:12px;color:var(--blue);background:var(--blue-bg);padding:6px 10px;border-radius:var(--r);margin-bottom:10px;line-height:1.6}
+.gr-ex-title{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.gr-ex{background:var(--bg2);border-radius:var(--r);padding:8px 12px;margin-bottom:6px}
+.gr-ex-kr{font-size:13px;font-weight:500;margin-bottom:2px}
+.gr-ex-vn{font-size:12px;color:var(--primary);margin-bottom:1px}
+.gr-ex-pron{font-size:11px;color:var(--blue);font-family:monospace}
+.grq-card{width:100%;max-width:420px;background:var(--bg);border-radius:var(--rxl);padding:1.5rem;border:0.5px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05)}
+.grq-q{font-size:15px;line-height:1.8;margin-bottom:4px;font-weight:500}
+.grq-ctx{font-size:11px;color:var(--text3);margin-bottom:12px}
+.grq-choices{display:flex;flex-direction:column;gap:8px;width:100%;max-width:420px}
+.grcb{padding:12px 16px;border-radius:var(--rl);border:1.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;text-align:left}
+.grcb:hover{border-color:var(--purple);background:var(--purple-bg);color:var(--purple)}
+.grcb.cor{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.grcb.wro{border-color:var(--red);background:var(--red-bg);color:var(--red)}
 /* 모달 */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
 .ov.open{display:flex}
@@ -295,6 +316,21 @@ body{font-family:-apple-system,'Pretendard',sans-serif;font-size:14px;background
   <div class="phlist" id="phList"></div>
 </div>
 
+<!-- 문법 -->
+<div class="page" id="page-grammar">
+  <div class="gr-toolbar">
+    <select class="wfsel" id="grLvFilter" onchange="renderGrammar()">
+      <option value="">전체</option>
+      <option value="2급">2급</option>
+      <option value="3급">3급</option>
+    </select>
+    <input class="wsinp" type="text" id="grSearch" placeholder="문법 검색..." oninput="renderGrammar()" style="flex:1;min-width:100px">
+    <button class="awbtn" onclick="startGrQuiz()" style="background:var(--purple);border-color:var(--purple)">📝 퀴즈</button>
+  </div>
+  <div class="wstats" id="grStats"></div>
+  <div class="wlist" id="grList"></div>
+</div>
+
 <!-- 탭바 -->
 <div class="tab-bar">
   <button class="ti active" onclick="showPage('home',this)"><div class="ticon">🏠</div>홈</button>
@@ -302,6 +338,7 @@ body{font-family:-apple-system,'Pretendard',sans-serif;font-size:14px;background
   <button class="ti" onclick="showPage('words',this)"><div class="ticon">📖</div>단어장</button>
   <button class="ti" onclick="showPage('quiz',this)"><div class="ticon">🎯</div>퀴즈</button>
   <button class="ti" onclick="showPage('phrases',this)"><div class="ticon">⭐</div>문장</button>
+  <button class="ti" onclick="showPage('grammar',this)"><div class="ticon">📝</div>문법</button>
 </div>
 
 <!-- 닉네임 -->
@@ -778,6 +815,7 @@ function showPage(id,el){
   if(id==='chat') scrollBot();
   if(id==='home') renderHome();
   if(id==='phrases') renderPhrases();
+  if(id==='grammar') renderGrammar();
 }
 
 // ════════════════════════════════════════════════════
@@ -1443,8 +1481,305 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('.wsw'))document.getElementById('sdd').classList.remove('open');
 });
 
-// 초기
-document.getElementById('chip-me').textContent=nicks.me;
+// ════════════════════════════════════════════════════
+// 문법 데이터 (2→3급 30개)
+// ════════════════════════════════════════════════════
+const GRAMMAR=[
+  {id:1,title:'-(아/어)서',lv:'2급',
+   meaning:'이유·원인을 나타내요. "~해서" = "because / so"',
+   meaning_vn:'Diễn tả lý do, nguyên nhân.',
+   examples:[
+     {kr:'피곤해서 일찍 잤어요.',vn:'Vì mệt nên tôi ngủ sớm.',pron:'비 맷 넨 또이 응우 섬'},
+     {kr:'배가 고파서 밥을 먹었어요.',vn:'Vì đói nên tôi đã ăn cơm.',pron:'비 도이 넨 또이 다 안 껌'},
+     {kr:'비가 와서 못 나갔어요.',vn:'Vì trời mưa nên tôi không ra ngoài được.',pron:'비 쩌이 므아 넨 또이 콩 라 응오아이 드억'},
+   ],
+   quiz:[
+     {q:'피곤______ 일찍 잤어요.',blank:'해서',choices:['해서','하지만','하려고','하면']},
+     {q:'비가 와______ 우산을 가져왔어요.',blank:'서',choices:['서','지만','도록','니까']},
+   ]},
+  {id:2,title:'-지만',lv:'2급',
+   meaning:'앞 내용과 반대되거나 대조되는 내용을 연결해요. "~이지만" = "but / although"',
+   meaning_vn:'Nối hai vế có nội dung trái ngược nhau.',
+   examples:[
+     {kr:'비싸지만 맛있어요.',vn:'Dù đắt nhưng ngon.',pron:'주 닷 니엉 응온'},
+     {kr:'어렵지만 재미있어요.',vn:'Dù khó nhưng thú vị.',pron:'주 커 니엉 투 비'},
+     {kr:'작지만 편해요.',vn:'Dù nhỏ nhưng tiện.',pron:'주 뇨 니엉 띠엔'},
+   ],
+   quiz:[
+     {q:'비싸______ 맛있어요.',blank:'지만',choices:['지만','아서','려고','면']},
+     {q:'한국어가 어렵______ 열심히 공부해요.',blank:'지만',choices:['지만','어서','도록','거든요']},
+   ]},
+  {id:3,title:'-(으)니까',lv:'2급',
+   meaning:'이유·원인. "~으니까" = "since / because". 명령·권유문 앞에 자주 써요.',
+   meaning_vn:'Diễn tả lý do, thường dùng trước câu mệnh lệnh hoặc đề nghị.',
+   examples:[
+     {kr:'날씨가 추우니까 따뜻하게 입으세요.',vn:'Vì trời lạnh nên hãy mặc ấm vào.',pron:'비 쩌이 라잉 넨 하이 맥 엄 바오'},
+     {kr:'늦으니까 빨리 가요.',vn:'Vì muộn rồi nên đi nhanh thôi.',pron:'비 무온 로이 넨 디 냐잉 토이'},
+     {kr:'바쁘니까 나중에 얘기해요.',vn:'Vì bận nên nói chuyện sau nhé.',pron:'비 반 넨 노이 쭈이엔 사우 냬'},
+   ],
+   quiz:[
+     {q:'날씨가 춥______ 코트를 입으세요.',blank:'으니까',choices:['으니까','어서','지만','면']},
+     {q:'시간이 없______ 빨리 합시다.',blank:'으니까',choices:['으니까','어서','지만','는데']},
+   ]},
+  {id:4,title:'-는데 / -(으)ㄴ데',lv:'2급',
+   meaning:'배경 설명, 대조, 부드러운 연결. 영어의 "and / but / while" 느낌.',
+   meaning_vn:'Dùng để bổ sung thông tin nền, đối chiếu hoặc dẫn dắt câu tiếp theo.',
+   examples:[
+     {kr:'비가 오는데 우산이 없어요.',vn:'Trời đang mưa mà không có ô.',pron:'쩌이 당 므아 마 콩 꺼 오'},
+     {kr:'음식이 맛있는데 양이 적어요.',vn:'Đồ ăn ngon nhưng ít.',pron:'도 안 응온 니엉 잇'},
+     {kr:'한국어를 배우는데 재미있어요.',vn:'Đang học tiếng Hàn, thú vị lắm.',pron:'당 혹 띠엥 한 투 비 람'},
+   ],
+   quiz:[
+     {q:'비가 오______ 우산을 안 가져왔어요.',blank:'는데',choices:['는데','서','지만','면']},
+     {q:'음식이 맛있______ 너무 비싸요.',blank:'는데',choices:['는데','어서','지만','도록']},
+   ]},
+  {id:5,title:'-(으)려고',lv:'2급',
+   meaning:'어떤 행동을 하려는 의도나 목적을 나타내요. "~하려고" = "in order to / planning to"',
+   meaning_vn:'Diễn tả ý định hoặc mục đích.',
+   examples:[
+     {kr:'한국어를 배우려고 학원에 다녀요.',vn:'Để học tiếng Hàn tôi đang đi học thêm.',pron:'데 혹 띠엥 한 또이 당 디 혹 템'},
+     {kr:'선물을 사려고 백화점에 갔어요.',vn:'Tôi đã đến trung tâm thương mại để mua quà.',pron:'또이 다 덴 쭝 떰 트엉 마이 데 무아 꽈'},
+     {kr:'다이어트를 하려고 운동을 시작했어요.',vn:'Tôi đã bắt đầu tập thể dục để ăn kiêng.',pron:'또이 다 밧 더우 땁 테 죽 데 안 끼엥'},
+   ],
+   quiz:[
+     {q:'한국어를 배우______ 학원에 등록했어요.',blank:'려고',choices:['려고','어서','지만','는데']},
+     {q:'선물을 사______ 백화점에 갔어요.',blank:'려고',choices:['려고','어서','지만','면']},
+   ]},
+  {id:6,title:'-기 때문에',lv:'3급',
+   meaning:'이유·원인을 격식체로 나타내요. "-아/어서"보다 더 공식적인 표현.',
+   meaning_vn:'Diễn tả lý do (trang trọng hơn -아/어서).',
+   examples:[
+     {kr:'시험이 있기 때문에 공부해야 해요.',vn:'Vì có kỳ thi nên phải học bài.',pron:'비 꺼 끼 티 넨 파이 혹 바이'},
+     {kr:'바쁘기 때문에 못 갔어요.',vn:'Vì bận nên tôi đã không đi được.',pron:'비 반 넨 또이 다 콩 디 드억'},
+     {kr:'건강이 중요하기 때문에 운동해요.',vn:'Vì sức khỏe quan trọng nên tôi tập thể dục.',pron:'비 스크 쾨 꽌 쫑 넨 또이 땁 테 죽'},
+   ],
+   quiz:[
+     {q:'시험이 있______ 열심히 공부해요.',blank:'기 때문에',choices:['기 때문에','어서','지만','는데']},
+     {q:'바쁘______ 전화를 못 받았어요.',blank:'기 때문에',choices:['기 때문에','어서','지만','면']},
+   ]},
+  {id:7,title:'-(으)ㄹ 것 같다',lv:'3급',
+   meaning:'추측이나 예상을 나타내요. "~할 것 같다" = "it seems like / I think it will"',
+   meaning_vn:'Diễn tả sự phỏng đoán hoặc dự đoán.',
+   examples:[
+     {kr:'비가 올 것 같아요.',vn:'Có vẻ trời sắp mưa.',pron:'꺼 베 쩌이 삽 므아'},
+     {kr:'이 음식은 맛있을 것 같아요.',vn:'Có vẻ món này ngon.',pron:'꺼 베 몬 나이 응온'},
+     {kr:'오늘 늦을 것 같아요.',vn:'Có vẻ hôm nay sẽ muộn.',pron:'꺼 베 홈 나이 쎄 무온'},
+   ],
+   quiz:[
+     {q:'내일 비가 ______ 것 같아요.',blank:'올',choices:['올','오는','오기','오면']},
+     {q:'이 문제는 어려______ 것 같아요.',blank:'울',choices:['울','운','우기','우면']},
+   ]},
+  {id:8,title:'-(으)ㄹ 수 있다/없다',lv:'2급',
+   meaning:'가능·불가능을 나타내요. "can / cannot"',
+   meaning_vn:'Diễn tả khả năng có thể hoặc không thể làm gì.',
+   examples:[
+     {kr:'저는 한국어를 할 수 있어요.',vn:'Tôi có thể nói tiếng Hàn.',pron:'또이 꺼 테 노이 띠엥 한'},
+     {kr:'지금은 갈 수 없어요.',vn:'Bây giờ tôi không thể đi được.',pron:'버이 지어 또이 콩 테 디 드억'},
+     {kr:'이거 도와줄 수 있어요?',vn:'Bạn có thể giúp tôi cái này không?',pron:'반 꺼 테 쥡 또이 까이 나이 콩'},
+   ],
+   quiz:[
+     {q:'저는 수영을 ______ 수 있어요.',blank:'할',choices:['할','하는','하기','해서']},
+     {q:'오늘은 시간이 없어서 ______ 수 없어요.',blank:'갈',choices:['갈','가는','가기','가서']},
+   ]},
+  {id:9,title:'-아/어 보다',lv:'2급',
+   meaning:'시도나 경험을 나타내요. "~해 보다" = "to try / to have experienced"',
+   meaning_vn:'Diễn tả việc thử làm hoặc kinh nghiệm đã trải qua.',
+   examples:[
+     {kr:'한국 음식을 먹어 봤어요?',vn:'Bạn đã thử ăn đồ ăn Hàn Quốc chưa?',pron:'반 다 트 안 도 안 한 꾸옥 쯔아'},
+     {kr:'김치를 만들어 봤어요.',vn:'Tôi đã thử làm kimchi rồi.',pron:'또이 다 트 람 낌찌 로이'},
+     {kr:'한번 입어 보세요.',vn:'Hãy thử mặc một lần xem.',pron:'하이 트 맥 못 런 쎔'},
+   ],
+   quiz:[
+     {q:'한국 음식을 먹어 ______ ?',blank:'봤어요',choices:['봤어요','봐요','볼게요','보세요']},
+     {q:'이 옷을 한번 입어 ______ .',blank:'보세요',choices:['보세요','봤어요','봐요','볼게요']},
+   ]},
+  {id:10,title:'-고 싶다',lv:'2급',
+   meaning:'화자의 바람이나 희망을 나타내요. "I want to~"',
+   meaning_vn:'Diễn tả mong muốn của người nói.',
+   examples:[
+     {kr:'베트남에 가고 싶어요.',vn:'Tôi muốn đi Việt Nam.',pron:'또이 무온 디 비엣 남'},
+     {kr:'맛있는 거 먹고 싶어요.',vn:'Tôi muốn ăn gì ngon.',pron:'또이 무온 안 지 응온'},
+     {kr:'일찍 집에 가고 싶어요.',vn:'Tôi muốn về nhà sớm.',pron:'또이 무온 베 냐 섬'},
+   ],
+   quiz:[
+     {q:'베트남 음식을 먹______ 싶어요.',blank:'고',choices:['고','어','어서','는데']},
+     {q:'한국어를 잘 하______ 싶어요.',blank:'고',choices:['고','어','아서','지만']},
+   ]},
+  {id:11,title:'-아/어야 하다',lv:'2급',
+   meaning:'의무나 필요를 나타내요. "must / have to"',
+   meaning_vn:'Diễn tả nghĩa vụ hoặc sự cần thiết.',
+   examples:[
+     {kr:'약을 먹어야 해요.',vn:'Phải uống thuốc.',pron:'파이 우옹 투옥'},
+     {kr:'숙제를 해야 해요.',vn:'Phải làm bài tập.',pron:'파이 람 바이 땁'},
+     {kr:'일찍 일어나야 해요.',vn:'Phải dậy sớm.',pron:'파이 저이 섬'},
+   ],
+   quiz:[
+     {q:'내일 시험이 있어서 공부해______ 해요.',blank:'야',choices:['야','서','도','지만']},
+     {q:'건강을 위해 운동해______ 해요.',blank:'야',choices:['야','서','도','는데']},
+   ]},
+  {id:12,title:'-으면 / -면',lv:'2급',
+   meaning:'조건을 나타내요. "if / when"',
+   meaning_vn:'Diễn tả điều kiện.',
+   examples:[
+     {kr:'시간이 있으면 같이 가요.',vn:'Nếu có thời gian thì cùng đi nhé.',pron:'네우 꺼 터이 지안 티 꿍 디 냬'},
+     {kr:'비가 오면 집에 있을게요.',vn:'Nếu trời mưa tôi sẽ ở nhà.',pron:'네우 쩌이 므아 또이 쎄 어 냐'},
+     {kr:'어려우면 도와줄게요.',vn:'Nếu khó thì tôi sẽ giúp.',pron:'네우 커 티 또이 쎄 쥡'},
+   ],
+   quiz:[
+     {q:'시간이 있______ 같이 영화 봐요.',blank:'으면',choices:['으면','어서','지만','는데']},
+     {q:'모르______ 저한테 물어보세요.',blank:'으면',choices:['으면','어서','지만','는데']},
+   ]},
+  {id:13,title:'-는 동안',lv:'3급',
+   meaning:'어떤 행동이 지속되는 시간을 나타내요. "while / during"',
+   meaning_vn:'Diễn tả khoảng thời gian diễn ra một hành động.',
+   examples:[
+     {kr:'밥을 먹는 동안 TV를 봤어요.',vn:'Trong khi ăn tôi đã xem TV.',pron:'쫑 키 안 또이 다 쎔 띠비'},
+     {kr:'기다리는 동안 책을 읽었어요.',vn:'Trong khi chờ tôi đã đọc sách.',pron:'쫑 키 쩌 또이 다 독 사익'},
+     {kr:'여행하는 동안 많이 먹었어요.',vn:'Trong chuyến đi tôi đã ăn nhiều.',pron:'쫑 쭈이엔 디 또이 다 안 니에우'},
+   ],
+   quiz:[
+     {q:'수업을 듣______ 동안 메모를 했어요.',blank:'는',choices:['는','은','을','이']},
+     {q:'기다리______ 동안 음악을 들었어요.',blank:'는',choices:['는','은','를','이']},
+   ]},
+  {id:14,title:'-은/는 것',lv:'2급',
+   meaning:'동사·형용사를 명사처럼 만들어요. "the act of / the fact that"',
+   meaning_vn:'Danh từ hóa động từ hoặc tính từ.',
+   examples:[
+     {kr:'한국어를 배우는 것이 재미있어요.',vn:'Việc học tiếng Hàn rất thú vị.',pron:'비엑 혹 띠엥 한 럿 투 비'},
+     {kr:'운동하는 것이 건강에 좋아요.',vn:'Việc tập thể dục tốt cho sức khỏe.',pron:'비엑 땁 테 죽 똣 쩌 스크 쾨'},
+     {kr:'일찍 자는 것이 중요해요.',vn:'Việc ngủ sớm quan trọng.',pron:'비엑 응우 섬 꽌 쫑'},
+   ],
+   quiz:[
+     {q:'한국어를 배우______ 것이 쉽지 않아요.',blank:'는',choices:['는','은','를','이']},
+     {q:'매일 운동하______ 것이 중요해요.',blank:'는',choices:['는','은','를','이']},
+   ]},
+  {id:15,title:'-아/어도',lv:'3급',
+   meaning:'양보를 나타내요. "even if / even though"',
+   meaning_vn:'Diễn tả sự nhượng bộ.',
+   examples:[
+     {kr:'비가 와도 갈 거예요.',vn:'Dù trời mưa tôi vẫn sẽ đi.',pron:'주 쩌이 므아 또이 번 쎄 디'},
+     {kr:'어려워도 포기하지 않을게요.',vn:'Dù khó tôi cũng không bỏ cuộc.',pron:'주 커 또이 꿍 콩 보 꾸옥'},
+     {kr:'바빠도 연락할게요.',vn:'Dù bận tôi cũng sẽ liên lạc.',pron:'주 반 또이 꿍 쎄 리엔 락'},
+   ],
+   quiz:[
+     {q:'비가 와______ 운동할 거예요.',blank:'도',choices:['도','서','지만','면']},
+     {q:'어려워______ 포기하지 않을 거예요.',blank:'도',choices:['도','서','지만','면']},
+   ]},
+];
+
+// ════════════════════════════════════════════════════
+// 문법 관련 상태 & 함수
+// ════════════════════════════════════════════════════
+let grSession=0, grQI=0, grQSc=0, grQTot=0, grQWrong=[], grQList=[];
+
+function renderGrammar(){
+  const q=(document.getElementById('grSearch')?.value||'').toLowerCase();
+  const lv=document.getElementById('grLvFilter')?.value||'';
+  const f=GRAMMAR.filter(g=>
+    (!lv||g.lv===lv)&&
+    (!q||g.title.toLowerCase().includes(q)||g.meaning.toLowerCase().includes(q))
+  );
+  document.getElementById('grStats').textContent=`총 ${GRAMMAR.length}개 · 표시 ${f.length}개`;
+  const list=document.getElementById('grList');
+  if(!f.length){list.innerHTML='<div class="empty">검색 결과가 없어요</div>';return;}
+  list.innerHTML=f.map(g=>`
+    <div class="gr-card">
+      <div class="gr-top">
+        <div class="gr-title">${esc(g.title)}</div>
+        <span class="gr-lv">${g.lv}</span>
+      </div>
+      <div class="gr-meaning">${esc(g.meaning)}</div>
+      <div class="gr-vn">${esc(g.meaning_vn)}</div>
+      <div class="gr-ex-title">예문</div>
+      ${g.examples.map(ex=>`
+        <div class="gr-ex">
+          <div class="gr-ex-kr">${esc(ex.kr)}</div>
+          <div class="gr-ex-vn">${esc(ex.vn)}</div>
+          <div class="gr-ex-pron">[ ${esc(ex.pron)} ]</div>
+          <div style="display:flex;gap:6px;margin-top:5px">
+            <button class="tts-btn" style="padding:4px 10px;font-size:11px" onclick="speak('${esq(ex.kr)}','ko-KR')">🔊 한</button>
+            <button class="tts-btn" style="padding:4px 10px;font-size:11px" onclick="speak('${esq(ex.vn)}','vi-VN')">🔊 베</button>
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function startGrQuiz(){
+  grSession++;grQI=0;grQSc=0;grQTot=0;grQWrong=[];
+  // 모든 문법의 퀴즈 문항 합치기
+  grQList=[];
+  GRAMMAR.forEach(g=>{
+    g.quiz.forEach(q=>{
+      grQList.push({...q, grammarTitle:g.title, grammarLv:g.lv});
+    });
+  });
+  grQList=grQList.sort(()=>Math.random()-.5);
+  // 퀴즈 탭으로 전환해서 표시
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ti').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-quiz').classList.add('active');
+  document.querySelectorAll('.ti')[3].classList.add('active');
+  renderGrQ();
+}
+
+function renderGrQ(){
+  if(grQI>=grQList.length){showGrResult();return;}
+  const q=grQList[grQI];
+  const pct=Math.round(grQI/grQList.length*100);
+  const myS=grSession;
+  document.getElementById('qwrap').innerHTML=`
+    <div class="qtop" style="width:100%;max-width:420px">
+      <span style="font-size:13px;color:var(--text2)">${grQI+1} / ${grQList.length}</span>
+      <span style="font-size:13px;font-weight:600;color:var(--purple)">✅${grQSc} ❌${grQTot-grQSc}</span>
+    </div>
+    <div class="qpb"><div class="qpbf" style="width:${pct}%;background:var(--purple)"></div></div>
+    <button onclick="showPage('grammar',document.querySelectorAll('.ti')[5])" style="align-self:flex-start;font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;margin-bottom:2px">← 뒤로</button>
+    <div style="width:100%;max-width:420px;font-size:11px;padding:3px 8px;border-radius:20px;background:var(--purple-bg);color:var(--purple);font-weight:600;width:fit-content">${q.grammarTitle} · ${q.grammarLv}</div>
+    <div class="grq-card">
+      <div class="grq-q">${esc(q.q.replace(q.blank,'___'))}</div>
+      <div class="grq-ctx">빈 칸에 알맞은 것을 골라요</div>
+    </div>
+    <div class="grq-choices">
+      ${q.choices.map((c,i)=>`<button class="grcb" id="grc${i}" onclick="ansGrQ(${i})">${esc(c)}</button>`).join('')}
+    </div>`;
+  window._grq={q,done:false,myS};
+}
+
+function ansGrQ(idx){
+  if(!window._grq||window._grq.done)return;
+  window._grq.done=true;
+  const q=window._grq.q;
+  const ok=q.choices[idx]===q.blank;
+  q.choices.forEach((c,i)=>{
+    const b=document.getElementById('grc'+i);if(!b)return;
+    if(c===q.blank)b.classList.add('cor');
+    else if(i===idx&&!ok)b.classList.add('wro');
+  });
+  if(ok)grQSc++;else grQWrong.push(q);
+  grQTot++;
+  const s=grSession;
+  setTimeout(()=>{if(grSession!==s)return;grQI++;renderGrQ();},900);
+}
+
+function showGrResult(){
+  const pct=grQTot?Math.round(grQSc/grQTot*100):0;
+  const emoji=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':pct>=30?'💪':'📚';
+  const wl=grQWrong.length?`<div class="wrl" style="width:100%;max-width:420px">
+    <div class="wrl-t">❌ 틀린 문법 (${grQWrong.length}개)</div>
+    ${grQWrong.map(q=>`<div class="wrl-i"><strong>${esc(q.q.replace(q.blank,'___'))}</strong><br>정답: <span style="color:var(--green);font-weight:700">${esc(q.blank)}</span></div>`).join('')}
+  </div>`:'';
+  document.getElementById('qwrap').innerHTML=`
+    <div class="qres">
+      <div style="font-size:48px">${emoji}</div>
+      <div style="font-size:32px;font-weight:700;color:var(--purple)">${grQSc} / ${grQTot}</div>
+      <div style="font-size:28px;font-weight:700;color:var(--purple)">${pct}점</div>
+      <div style="font-size:14px;color:var(--text2)">${pct>=70?'문법 실력이 늘고 있어요!':'조금 더 연습해봐요!'}</div>
+      <div class="res-btns">
+        <button class="res-btn" style="background:var(--purple);color:#fff" onclick="startGrQuiz()">다시 하기</button>
+        <button class="res-btn" style="background:var(--bg2);color:var(--text);border:0.5px solid var(--border2)" onclick="showPage('grammar',document.querySelectorAll('.ti')[5])">문법 보기</button>
+      </div>
+    </div>${wl}`;
+}
 document.getElementById('chip-other').textContent=nicks.other;
 renderHome();renderMsgs();
 </script>
