@@ -15,763 +15,1438 @@
   --green:#0f6e56;--green-bg:#e1f5ee;
   --red:#a32d2d;--red-bg:#fcebeb;
   --amber:#854f0b;--amber-bg:#faeeda;
-  --radius:10px;--radius-lg:16px;--radius-xl:20px;
+  --purple:#534AB7;--purple-bg:#EEEDFE;
+  --r:10px;--rl:16px;--rxl:20px;
   --me:#f97316;--other:#f3f2ee;
 }
 @media(prefers-color-scheme:dark){:root{
   --bg:#1a1a18;--bg2:#222220;--bg3:#2a2a28;
   --text:#f3f2ee;--text2:#9e9e9a;--text3:#6b6b67;
   --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);
-  --primary-bg:#431407;--other:#2a2a28;
+  --primary-bg:#431407;--other:#2a2a28;--purple-bg:#26215C;
 }}
 html,body{height:100%;overflow:hidden}
 body{font-family:-apple-system,'Pretendard',sans-serif;font-size:14px;background:var(--bg3);color:var(--text);display:flex;flex-direction:column}
-
 /* 헤더 */
 .app-header{background:var(--bg);border-bottom:0.5px solid var(--border);padding:0 1rem;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.app-title{font-size:17px;font-weight:700;color:var(--primary)}
-.app-title small{font-size:11px;color:var(--text3);font-weight:400;margin-left:4px}
-.icon-btn{background:none;border:none;cursor:pointer;color:var(--text2);padding:6px;border-radius:8px;font-size:18px;line-height:1;transition:background .15s}
-.icon-btn:hover{background:var(--bg3)}
-
-/* 탭바 */
+.logo{font-size:17px;font-weight:700;color:var(--primary)}
+.logo small{font-size:11px;color:var(--text3);font-weight:400;margin-left:4px}
+.ibtn{background:none;border:none;cursor:pointer;color:var(--text2);padding:6px;border-radius:8px;font-size:18px;line-height:1}
+.ibtn:hover{background:var(--bg3)}
+/* 탭 */
 .tab-bar{background:var(--bg);border-top:0.5px solid var(--border);display:flex;flex-shrink:0}
-.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px;border:none;background:transparent;cursor:pointer;color:var(--text3);font-size:10px;font-weight:500;transition:color .15s}
-.tab-item.active{color:var(--primary)}
-.tab-icon{font-size:20px;line-height:1}
-
-/* 페이지 */
+.ti{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:7px 2px;border:none;background:transparent;cursor:pointer;color:var(--text3);font-size:9px;font-weight:500;transition:color .15s}
+.ti.active{color:var(--primary)}
+.ticon{font-size:19px;line-height:1}
 .page{display:none;flex:1;overflow:hidden;flex-direction:column}
 .page.active{display:flex}
-
-/* ─── 채팅 ─── */
-.chat-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
-.msg-group{display:flex;flex-direction:column;gap:3px}
-.msg-group.me{align-items:flex-end}
-.msg-group.other{align-items:flex-start}
-.msg-sender{font-size:11px;color:var(--text3);padding:0 4px}
-.msg-row{display:flex;align-items:flex-end;gap:6px}
-.msg-group.me .msg-row{flex-direction:row-reverse}
-.bubble{max-width:72%;padding:9px 13px;border-radius:var(--radius-xl);font-size:14px;line-height:1.5;word-break:break-word}
-.msg-group.me .bubble{background:var(--me);color:#fff;border-bottom-right-radius:6px}
-.msg-group.other .bubble{background:var(--other);color:var(--text);border-bottom-left-radius:6px}
-.msg-time{font-size:10px;color:var(--text3);white-space:nowrap;margin-bottom:2px}
-.msg-actions{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+/* 공통 버튼 */
+.btn{padding:8px 16px;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:13px;transition:all .15s}
+.btn:hover{background:var(--bg3)}
+.btn-p{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:600}
+.btn-p:hover{opacity:.85}
+/* 홈 */
+.hscroll{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:12px}
+.hcard{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:14px 16px}
+.hct{font-size:11px;font-weight:600;color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.tw-kr{font-size:26px;font-weight:700;text-align:center;margin-bottom:4px}
+.tw-vn{font-size:18px;color:var(--primary);text-align:center;margin-bottom:3px}
+.tw-pron{font-size:13px;color:var(--blue);font-family:monospace;text-align:center;margin-bottom:3px}
+.tw-mean{font-size:12px;color:var(--text3);text-align:center;margin-bottom:10px}
+.tw-acts{display:flex;gap:8px;justify-content:center}
+.tts-btn{padding:7px 14px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .15s}
+.tts-btn:hover{background:var(--primary-bg);color:var(--primary);border-color:var(--primary)}
+.pg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pg-item{background:var(--bg2);border-radius:var(--r);padding:10px 12px}
+.pg-cat{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px}
+.pg-bw{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:4px}
+.pg-bf{height:100%;background:var(--primary);border-radius:3px;transition:width .5s}
+.pg-n{font-size:10px;color:var(--text3)}
+.ph-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--border)}
+.ph-row:last-child{border-bottom:none;padding-bottom:0}
+.ph-kr{font-size:13px;font-weight:500}.ph-vn{font-size:12px;color:var(--primary);margin-top:1px}
+.phtts{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:4px}
+.phtts:hover{color:var(--primary)}
+/* 채팅 */
+.chatmsgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.mg{display:flex;flex-direction:column;gap:3px}
+.mg.me{align-items:flex-end}.mg.other{align-items:flex-start}
+.msender{font-size:11px;color:var(--text3);padding:0 4px}
+.mrow{display:flex;align-items:flex-end;gap:6px}
+.mg.me .mrow{flex-direction:row-reverse}
+.bub{max-width:72%;padding:9px 13px;border-radius:var(--rxl);font-size:14px;line-height:1.5;word-break:break-word}
+.mg.me .bub{background:var(--me);color:#fff;border-bottom-right-radius:6px}
+.mg.other .bub{background:var(--other);color:var(--text);border-bottom-left-radius:6px}
+.mtime{font-size:10px;color:var(--text3);white-space:nowrap;margin-bottom:2px}
+.reacts{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.rpill{font-size:13px;padding:2px 7px;border-radius:20px;background:var(--bg2);border:0.5px solid var(--border2);cursor:pointer;user-select:none;transition:all .15s}
+.rpill:hover{transform:scale(1.1)}.rpill.on{background:var(--primary-bg);border-color:var(--primary)}
+.epicker{display:flex;gap:4px;background:var(--bg);border:0.5px solid var(--border2);padding:5px 7px;border-radius:var(--rl);width:fit-content}
+.eopt{font-size:17px;cursor:pointer;padding:3px;border-radius:6px}.eopt:hover{background:var(--bg2)}
+.macts{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
 .mab{font-size:11px;padding:3px 9px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg);color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap}
 .mab:hover{background:var(--primary-bg);color:var(--primary);border-color:var(--primary)}
 .mab.on{background:var(--blue-bg);color:var(--blue);border-color:var(--blue)}
-.trans-bubble{margin-top:4px;font-size:12px;color:var(--blue);background:var(--blue-bg);padding:7px 11px;border-radius:10px;border-left:2px solid var(--blue);line-height:1.5}
-.trans-loading{color:var(--text3);font-style:italic}
-
-.chat-input-area{background:var(--bg);border-top:0.5px solid var(--border);padding:8px 12px;flex-shrink:0}
-.chat-who-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
-.who-chip{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-weight:500;transition:all .15s}
-.who-chip.active{border-color:var(--primary);background:var(--primary-bg);color:var(--primary)}
-.who-label{font-size:11px;color:var(--text3)}
-.chat-row{display:flex;gap:8px;align-items:flex-end}
-.chat-input{flex:1;font-size:14px;padding:10px 14px;border:0.5px solid var(--border2);border-radius:22px;background:var(--bg2);color:var(--text);outline:none;resize:none;max-height:100px;line-height:1.4;transition:border-color .15s}
-.chat-input:focus{border-color:var(--primary);background:var(--bg)}
-.send-btn{width:40px;height:40px;border-radius:50%;background:var(--primary);border:none;color:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.send-btn:hover{opacity:.85}
-
-/* ─── 단어장 ─── */
-.word-toolbar{display:flex;gap:8px;padding:10px 12px;background:var(--bg);border-bottom:0.5px solid var(--border);flex-shrink:0;flex-wrap:wrap}
-.word-search-wrap{flex:1;min-width:180px;position:relative}
-.word-search-inp{width:100%;font-size:13px;padding:8px 36px 8px 12px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);outline:none;transition:border-color .15s}
-.word-search-inp:focus{border-color:var(--primary)}
-.search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;display:none}
-.word-filter-sel{font-size:12px;padding:7px 10px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);outline:none;cursor:pointer}
-.add-word-btn{font-size:12px;padding:7px 14px;border-radius:var(--radius);border:none;background:var(--primary);color:#fff;cursor:pointer;font-weight:600;white-space:nowrap}
-.add-word-btn:hover{opacity:.85}
-.word-stats{font-size:12px;color:var(--text3);padding:6px 12px 2px}
-.word-list{flex:1;overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:8px}
-.word-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:12px 14px;display:flex;align-items:center;gap:10px;transition:border-color .15s}
-.word-card:hover{border-color:var(--border2)}
-.word-content{flex:1;min-width:0}
-.word-kr{font-size:14px;font-weight:600}
-.word-vn{font-size:13px;color:var(--primary);margin-top:2px}
-.word-pron{font-size:11px;color:var(--text3);margin-top:1px}
-.word-cat{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;background:var(--primary-bg);color:var(--primary);font-weight:500;margin-top:3px}
-.word-right{display:flex;gap:6px;flex-shrink:0}
-.word-del-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:4px;border-radius:6px}
-.word-del-btn:hover{color:var(--red);background:var(--red-bg)}
-.word-empty{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:13px}
-
-/* 검색 결과 드롭다운 */
-.search-dd{position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);box-shadow:0 4px 16px rgba(0,0,0,.12);max-height:260px;overflow-y:auto;display:none;margin-top:2px}
-.search-dd.open{display:block}
-.dd-item{padding:10px 12px;cursor:pointer;border-bottom:0.5px solid var(--border);font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.dd-item:last-child{border-bottom:none}
-.dd-item:hover{background:var(--bg2)}
-.dd-kr{font-weight:600}
-.dd-vn{color:var(--primary)}
-.dd-add{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--primary-bg);color:var(--primary);border:0.5px solid var(--primary);white-space:nowrap}
-.dd-searching{padding:12px;text-align:center;color:var(--text3);font-size:13px}
-
-/* ─── 퀴즈 ─── */
-.quiz-wrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:1rem;gap:.75rem;overflow-y:auto}
-.quiz-top{width:100%;max-width:400px;display:flex;align-items:center;justify-content:space-between}
-.quiz-progress-txt{font-size:13px;color:var(--text2)}
-.quiz-score-txt{font-size:13px;font-weight:600;color:var(--primary)}
-.prog-bar{width:100%;max-width:400px;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
-.prog-fill{height:100%;background:var(--primary);border-radius:3px;transition:width .4s}
-.flashcard{width:100%;max-width:400px;min-height:190px;background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius-xl);padding:1.75rem;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 2px 20px rgba(0,0,0,.06);transition:transform .15s}
-.flashcard:active{transform:scale(.98)}
-.card-hint{font-size:11px;color:var(--text3)}
-.card-q{font-size:26px;font-weight:700;line-height:1.3}
-.card-pron{font-size:12px;color:var(--text3);margin-top:2px}
-.card-tap{font-size:11px;color:var(--text3);margin-top:10px}
-.card-ans{font-size:22px;font-weight:600;color:var(--primary);margin-top:6px;animation:fi .25s ease}
-.card-ans-pron{font-size:12px;color:var(--text3)}
-@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.quiz-btns{display:flex;gap:10px;width:100%;max-width:400px}
-.qbtn{flex:1;padding:13px;border-radius:var(--radius-lg);border:none;font-size:15px;font-weight:600;cursor:pointer;transition:all .15s}
-.qbtn.wrong{background:var(--red-bg);color:var(--red)}.qbtn.wrong:hover{filter:brightness(.95)}
-.qbtn.correct{background:var(--green-bg);color:var(--green)}.qbtn.correct:hover{filter:brightness(.95)}
-.qbtn.next{background:var(--primary);color:#fff}.qbtn.next:hover{opacity:.85}
-.quiz-modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:400px}
-.qmode-btn{padding:10px 8px;border-radius:var(--radius-lg);border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s;line-height:1.4}
-.qmode-btn.active{border-color:var(--primary);background:var(--primary-bg);color:var(--primary)}
-.quiz-start-btn{width:100%;max-width:400px;padding:14px;border-radius:var(--radius-lg);background:var(--primary);color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer}
-.quiz-start-btn:hover{opacity:.85}
-.quiz-result{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1rem;padding:2rem 1rem}
-.res-emoji{font-size:48px}
-.res-score{font-size:32px;font-weight:700;color:var(--primary)}
-.res-sub{font-size:14px;color:var(--text2)}
-.res-btns{display:flex;gap:10px;margin-top:.5rem}
-.res-btn{padding:12px 24px;border-radius:var(--radius-lg);border:none;font-size:14px;font-weight:600;cursor:pointer}
-.quiz-empty{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:13px;display:flex;flex-direction:column;align-items:center;gap:12px}
-
-/* ─── 닉네임 설정 모달 ─── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
-.overlay.open{display:flex}
-.sheet{background:var(--bg);border-radius:var(--radius-xl) var(--radius-xl) 0 0;padding:1.5rem;width:100%;max-width:500px;max-height:85vh;overflow-y:auto}
-.sheet-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 1.25rem}
-.sheet h3{font-size:16px;font-weight:700;margin-bottom:1.25rem;text-align:center}
-.form-row{margin-bottom:12px}
-.form-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px;display:block}
-.form-inp,.form-sel{width:100%;font-size:14px;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg2);color:var(--text);outline:none;transition:border-color .15s}
-.form-inp:focus,.form-sel:focus{border-color:var(--primary);background:var(--bg)}
-.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.sheet-btns{display:flex;gap:8px;margin-top:1rem}
-.sheet-cancel{flex:1;padding:12px;border-radius:var(--radius-lg);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:14px}
-.sheet-save{flex:2;padding:12px;border-radius:var(--radius-lg);border:none;background:var(--primary);color:#fff;cursor:pointer;font-size:14px;font-weight:600}
-.sheet-cancel:hover{background:var(--bg3)}
-.sheet-save:hover{opacity:.85}
+.tbub{margin-top:4px;font-size:12px;color:var(--blue);background:var(--blue-bg);padding:7px 11px;border-radius:10px;border-left:2px solid var(--blue);line-height:1.5}
+.chatia{background:var(--bg);border-top:0.5px solid var(--border);padding:8px 12px;flex-shrink:0}
+.whorow{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.wchip{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-weight:500;transition:all .15s}
+.wchip.active{border-color:var(--primary);background:var(--primary-bg);color:var(--primary)}
+.chatrow{display:flex;gap:8px;align-items:flex-end}
+.chatinp{flex:1;font-size:14px;padding:10px 14px;border:0.5px solid var(--border2);border-radius:22px;background:var(--bg2);color:var(--text);outline:none;resize:none;max-height:100px;line-height:1.4;transition:border-color .15s}
+.chatinp:focus{border-color:var(--primary);background:var(--bg)}
+.sendbtn{width:40px;height:40px;border-radius:50%;background:var(--primary);border:none;color:#fff;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sendbtn:hover{opacity:.85}
+/* 단어장 */
+.wtbar{display:flex;gap:8px;padding:10px 12px;background:var(--bg);border-bottom:0.5px solid var(--border);flex-shrink:0;flex-wrap:wrap}
+.wsw{flex:1;min-width:140px;position:relative}
+.wsinp{width:100%;font-size:13px;padding:8px 30px 8px 12px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);outline:none}
+.wsinp:focus{border-color:var(--primary)}
+.wsclr{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;display:none}
+.wfsel{font-size:12px;padding:7px 8px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);outline:none;cursor:pointer}
+.awbtn{font-size:12px;padding:7px 12px;border-radius:var(--r);border:none;background:var(--primary);color:#fff;cursor:pointer;font-weight:600;white-space:nowrap}
+.wstats{font-size:12px;color:var(--text3);padding:6px 12px 2px}
+.wlist{flex:1;overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:8px}
+.wcard{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:11px 13px;display:flex;align-items:center;gap:10px}
+.wcc{flex:1;min-width:0}
+.wkr{font-size:14px;font-weight:600}
+.wvn{font-size:13px;color:var(--primary);margin-top:2px}
+.wpron{font-size:11px;color:var(--blue);font-family:monospace;margin-top:1px}
+.wmean{font-size:11px;color:var(--text3);margin-top:1px}
+.wcat{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;background:var(--primary-bg);color:var(--primary);font-weight:500;margin-top:3px}
+.wwrong{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;background:var(--red-bg);color:var(--red);font-weight:500;margin-top:3px;margin-left:3px}
+.wbw{display:flex;gap:4px;flex-shrink:0;align-items:center}
+.wb{background:none;border:none;cursor:pointer;font-size:15px;padding:4px;border-radius:6px;color:var(--text3)}
+.wb:hover{background:var(--bg2)}
+.sdd{position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--r);box-shadow:0 4px 16px rgba(0,0,0,.12);max-height:240px;overflow-y:auto;display:none;margin-top:2px}
+.sdd.open{display:block}
+.sdd-item{padding:10px 12px;cursor:pointer;border-bottom:0.5px solid var(--border);font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sdd-item:hover{background:var(--bg2)}
+.sdkr{font-weight:600}.sdvn{color:var(--primary)}
+.sdadd{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--primary-bg);color:var(--primary);border:0.5px solid var(--primary);cursor:pointer}
+/* 퀴즈 */
+.qwrap{flex:1;display:flex;flex-direction:column;align-items:center;padding:1rem;gap:.75rem;overflow-y:auto}
+.qmgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:420px}
+.qmc{background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--rl);padding:14px 12px;cursor:pointer;text-align:center;transition:all .15s}
+.qmc:hover,.qmc.active{border-color:var(--primary);background:var(--primary-bg)}
+.qmci{font-size:28px;margin-bottom:6px}
+.qmcn{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.qmcd{font-size:11px;color:var(--text3);line-height:1.4}
+.qstbtn{width:100%;max-width:420px;padding:14px;border-radius:var(--rl);background:var(--primary);color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer}
+.qstbtn:hover{opacity:.85}
+/* 공통 퀴즈 헤더 */
+.qtop{width:100%;max-width:420px;display:flex;align-items:center;justify-content:space-between}
+.qpb{width:100%;max-width:420px;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.qpbf{height:100%;background:var(--primary);border-radius:3px;transition:width .4s}
+/* 4지선다 */
+.mcqq{width:100%;max-width:420px;background:var(--bg);border-radius:var(--rxl);padding:1.5rem;text-align:center;border:0.5px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05)}
+.mcqqw{font-size:24px;font-weight:700;margin-bottom:6px}
+.mcqqp{font-size:12px;color:var(--blue);font-family:monospace}
+.mcqcs{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:420px}
+.mcqb{padding:14px 10px;border-radius:var(--rl);border:1.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4}
+.mcqb:hover{border-color:var(--primary);background:var(--primary-bg)}
+.mcqb.cor{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.mcqb.wro{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+/* 스피드 */
+.sptw{width:100%;max-width:420px;display:flex;align-items:center;gap:10px}
+.sptb{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.sptbf{height:100%;background:var(--primary);border-radius:4px;transition:width .1s linear}
+.sptxt{font-size:14px;font-weight:700;color:var(--primary);min-width:28px;text-align:right}
+.spq{width:100%;max-width:420px;background:var(--bg);border-radius:var(--rxl);padding:1.5rem;text-align:center;border:0.5px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05)}
+.spcs{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:420px}
+.spb{padding:12px;border-radius:var(--rl);border:1.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;text-align:center}
+.spb:hover{border-color:var(--primary);background:var(--primary-bg)}
+.spb.hit{border-color:var(--green);background:var(--green-bg);color:var(--green);transform:scale(1.03)}
+.spb.mis{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+/* 매칭 게임 */
+.mgame{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:420px}
+.mgcol-t{font-size:11px;font-weight:600;color:var(--text3);text-align:center;margin-bottom:4px}
+.mgi{padding:11px 8px;border-radius:var(--rl);border:1.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4;min-height:46px;display:flex;align-items:center;justify-content:center}
+.mgi:hover{border-color:var(--primary);background:var(--primary-bg)}
+.mgi.sel{border-color:var(--primary);background:var(--primary-bg);color:var(--primary)}
+.mgi.done{border-color:var(--green);background:var(--green-bg);color:var(--green);cursor:default}
+.mgi.bad{border-color:var(--red);background:var(--red-bg);animation:shk .3s ease}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+/* 듣고 맞추기 */
+.listenq{width:100%;max-width:420px;background:var(--bg);border-radius:var(--rxl);padding:2rem;text-align:center;border:0.5px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05);display:flex;flex-direction:column;align-items:center;gap:12px}
+.listen-btn{width:80px;height:80px;border-radius:50%;background:var(--primary-bg);border:2px solid var(--primary);color:var(--primary);font-size:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.listen-btn:hover{background:var(--primary);color:#fff;transform:scale(1.05)}
+.listen-btn.playing{background:var(--primary);color:#fff;animation:pulse .6s ease infinite alternate}
+@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.08)}}
+.listen-hint{font-size:13px;color:var(--text3)}
+.listen-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.lcb{padding:13px 10px;border-radius:var(--rl);border:1.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;text-align:center;line-height:1.4}
+.lcb:hover{border-color:var(--primary);background:var(--primary-bg)}
+.lcb.cor{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.lcb.wro{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+/* 빈칸 채우기 */
+.fillq{width:100%;max-width:420px;background:var(--bg);border-radius:var(--rxl);padding:1.5rem;text-align:center;border:0.5px solid var(--border);box-shadow:0 2px 16px rgba(0,0,0,.05)}
+.fill-kr{font-size:22px;font-weight:700;margin-bottom:8px}
+.fill-vn{font-size:16px;color:var(--text2);line-height:2;letter-spacing:2px;margin-bottom:6px}
+.fill-hint{font-size:11px;color:var(--text3);margin-bottom:10px}
+.fill-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:420px}
+.fcb{padding:13px 10px;border-radius:var(--rl);border:1.5px solid var(--border2);background:var(--bg);color:var(--text);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;text-align:center;font-family:monospace}
+.fcb:hover{border-color:var(--purple);background:var(--purple-bg)}
+.fcb.cor{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.fcb.wro{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+/* 결과 */
+.qres{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1rem;padding:1rem}
+.res-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.res-btn{padding:11px 20px;border-radius:var(--rl);border:none;font-size:14px;font-weight:600;cursor:pointer}
+.wrl{width:100%;max-width:420px}
+.wrl-t{font-size:13px;font-weight:600;color:var(--red);margin-bottom:8px}
+.wrl-i{background:var(--red-bg);border-radius:var(--r);padding:8px 12px;margin-bottom:5px;font-size:13px}
+/* 즐겨찾기 */
+.phtbar{display:flex;gap:8px;padding:10px 12px;background:var(--bg);border-bottom:0.5px solid var(--border);flex-shrink:0}
+.phsrch{flex:1;font-size:13px;padding:8px 12px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);outline:none}
+.phsrch:focus{border-color:var(--primary)}
+.aphbtn{font-size:12px;padding:7px 12px;border-radius:var(--r);border:none;background:var(--purple);color:#fff;cursor:pointer;font-weight:600}
+.phlist{flex:1;overflow-y:auto;padding:8px 12px;display:flex;flex-direction:column;gap:8px}
+.phcard{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--rl);padding:12px 14px}
+.phkr{font-size:14px;font-weight:600;margin-bottom:3px}
+.phvn{font-size:13px;color:var(--primary);margin-bottom:6px}
+.phacts{display:flex;gap:6px;align-items:center}
+.phcat{font-size:10px;padding:1px 7px;border-radius:20px;background:var(--purple-bg);color:var(--purple);font-weight:500}
+.phdel{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:3px;margin-left:auto;border-radius:6px}
+.phdel:hover{color:var(--red);background:var(--red-bg)}
+.empty{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:13px}
+/* 모달 */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sh{background:var(--bg);border-radius:var(--rxl) var(--rxl) 0 0;padding:1.5rem;width:100%;max-width:500px;max-height:85vh;overflow-y:auto}
+.sh-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 1.25rem}
+.sh h3{font-size:16px;font-weight:700;margin-bottom:1.25rem;text-align:center}
+.fl{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px;display:block}
+.fi,.fsel,.fta{width:100%;font-size:14px;padding:10px 12px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);outline:none;transition:border-color .15s;margin-bottom:12px}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--primary);background:var(--bg)}
+.fta{resize:vertical;min-height:60px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.f2 .fi{margin-bottom:0}
+.shbtns{display:flex;gap:8px;margin-top:1rem}
+.shcancel{flex:1;padding:12px;border-radius:var(--rl);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:14px}
+.shsave{flex:2;padding:12px;border-radius:var(--rl);border:none;background:var(--primary);color:#fff;cursor:pointer;font-size:14px;font-weight:600}
+.shcancel:hover{background:var(--bg3)}.shsave:hover{opacity:.85}
 </style>
 </head>
 <body>
-
 <div class="app-header">
-  <div class="app-title">한베 <small>HanVe</small></div>
+  <div class="logo">한베 <small>HanVe</small></div>
   <div style="display:flex;gap:4px">
-    <button class="icon-btn" onclick="openNick()" title="닉네임 설정">👤</button>
-    <button class="icon-btn" onclick="openAddWord()" title="단어 추가">＋</button>
+    <button class="ibtn" onclick="openNick()">👤</button>
+    <button class="ibtn" onclick="openAddWord()">＋</button>
   </div>
 </div>
 
-<!-- ═══ 채팅 ═══ -->
-<div class="page active" id="page-chat">
-  <div class="chat-msgs" id="chatMsgs"></div>
-  <div class="chat-input-area">
-    <div class="chat-who-row">
-      <span class="who-label">보내는 사람:</span>
-      <button class="who-chip active" id="chip-me" onclick="setWho('me')">나</button>
-      <button class="who-chip" id="chip-other" onclick="setWho('other')">상대방</button>
-    </div>
-    <div class="chat-row">
-      <textarea class="chat-input" id="chatInput" placeholder="메시지 입력..." rows="1" onkeydown="chatKey(event)" oninput="autoH(this)"></textarea>
-      <button class="send-btn" onclick="sendMsg()">↑</button>
+<!-- 홈 -->
+<div class="page active" id="page-home">
+  <div class="hscroll">
+    <div class="hcard"><div class="hct">✨ 오늘의 단어</div><div id="todayWord"></div></div>
+    <div class="hcard"><div class="hct">📊 카테고리별 학습 진도</div><div class="pg-grid" id="pgGrid"></div></div>
+    <div class="hcard">
+      <div class="hct">⭐ 즐겨찾기 문장</div>
+      <div id="phPrev"></div>
+      <button onclick="showPage('phrases',document.querySelectorAll('.ti')[4])" style="width:100%;margin-top:10px;padding:8px;border-radius:var(--r);border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;font-size:12px">전체 보기 →</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ 단어장 ═══ -->
+<!-- 채팅 -->
+<div class="page" id="page-chat">
+  <div class="chatmsgs" id="chatMsgs"></div>
+  <div class="chatia">
+    <div class="whorow">
+      <span style="font-size:11px;color:var(--text3)">보내는 사람:</span>
+      <button class="wchip active" id="chip-me" onclick="setWho('me')">나</button>
+      <button class="wchip" id="chip-other" onclick="setWho('other')">상대방</button>
+    </div>
+    <div class="chatrow">
+      <textarea class="chatinp" id="chatInput" placeholder="메시지 입력..." rows="1" onkeydown="chatKey(event)" onkeyup="chatKeyUp(event)" oninput="autoH(this)"></textarea>
+      <button class="sendbtn" onclick="sendMsg()">↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- 단어장 -->
 <div class="page" id="page-words">
-  <div class="word-toolbar">
-    <div class="word-search-wrap">
-      <input class="word-search-inp" type="text" id="wordSearch" placeholder="단어 검색 또는 번역..." oninput="onSearchInput()" autocomplete="off">
-      <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
-      <div class="search-dd" id="searchDd"></div>
+  <div class="wtbar">
+    <div class="wsw">
+      <input class="wsinp" type="text" id="wordSearch" placeholder="검색 또는 번역..." oninput="onSI()" autocomplete="off">
+      <button class="wsclr" id="wsclr" onclick="clrSearch()">✕</button>
+      <div class="sdd" id="sdd"></div>
     </div>
-    <select class="word-filter-sel" id="catFilter" onchange="renderWords()">
-      <option value="">전체</option>
-    </select>
-    <button class="add-word-btn" onclick="openAddWord()">+ 추가</button>
+    <select class="wfsel" id="catF" onchange="renderWords()"><option value="">전체</option></select>
+    <button class="awbtn" onclick="openAddWord()">+ 추가</button>
   </div>
-  <div class="word-stats" id="wordStats"></div>
-  <div class="word-list" id="wordList"></div>
+  <div class="wstats" id="wstats"></div>
+  <div class="wlist" id="wlist"></div>
 </div>
 
-<!-- ═══ 퀴즈 ═══ -->
+<!-- 퀴즈 -->
 <div class="page" id="page-quiz">
-  <div class="quiz-wrap" id="quizWrap"></div>
+  <div class="qwrap" id="qwrap"></div>
+</div>
+
+<!-- 즐겨찾기 -->
+<div class="page" id="page-phrases">
+  <div class="phtbar">
+    <input class="phsrch" type="text" id="phSrch" placeholder="문장 검색..." oninput="renderPhrases()">
+    <button class="aphbtn" onclick="openAddPhrase()">+ 문장 추가</button>
+  </div>
+  <div class="phlist" id="phList"></div>
 </div>
 
 <!-- 탭바 -->
 <div class="tab-bar">
-  <button class="tab-item active" onclick="showPage('chat',this)"><div class="tab-icon">💬</div>채팅</button>
-  <button class="tab-item" onclick="showPage('words',this)"><div class="tab-icon">📖</div>단어장</button>
-  <button class="tab-item" onclick="showPage('quiz',this)"><div class="tab-icon">🎯</div>퀴즈</button>
+  <button class="ti active" onclick="showPage('home',this)"><div class="ticon">🏠</div>홈</button>
+  <button class="ti" onclick="showPage('chat',this)"><div class="ticon">💬</div>채팅</button>
+  <button class="ti" onclick="showPage('words',this)"><div class="ticon">📖</div>단어장</button>
+  <button class="ti" onclick="showPage('quiz',this)"><div class="ticon">🎯</div>퀴즈</button>
+  <button class="ti" onclick="showPage('phrases',this)"><div class="ticon">⭐</div>문장</button>
 </div>
 
-<!-- 닉네임 시트 -->
-<div class="overlay" id="nickOverlay">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <h3>닉네임 설정</h3>
-    <div class="form-2col">
-      <div><label class="form-label">내 닉네임</label><input class="form-inp" id="nick-me" placeholder="예: 동영"></div>
-      <div><label class="form-label">상대방 닉네임</label><input class="form-inp" id="nick-other" placeholder="예: 아내"></div>
-    </div>
-    <div class="sheet-btns">
-      <button class="sheet-cancel" onclick="closeSheet('nickOverlay')">취소</button>
-      <button class="sheet-save" onclick="saveNick()">저장</button>
-    </div>
-  </div>
-</div>
+<!-- 닉네임 -->
+<div class="ov" id="ov-nick"><div class="sh"><div class="sh-handle"></div><h3>닉네임 설정</h3>
+  <div class="f2"><div><label class="fl">내 닉네임</label><input class="fi" id="nick-me" placeholder="동영"></div><div><label class="fl">상대방 닉네임</label><input class="fi" id="nick-other" placeholder="아내"></div></div>
+  <div class="shbtns"><button class="shcancel" onclick="closeOv('ov-nick')">취소</button><button class="shsave" onclick="saveNick()">저장</button></div>
+</div></div>
 
-<!-- 단어 추가 시트 -->
-<div class="overlay" id="wordOverlay">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <h3 id="wordSheetTitle">단어 추가</h3>
-    <div class="form-2col">
-      <div><label class="form-label">한국어 🇰🇷</label><input class="form-inp" id="w-kr" placeholder="안녕하세요"></div>
-      <div><label class="form-label">베트남어 🇻🇳</label><input class="form-inp" id="w-vn" placeholder="Xin chào"></div>
-    </div>
-    <div class="form-row"><label class="form-label">발음 (선택)</label><input class="form-inp" id="w-pron" placeholder="씬 짜오"></div>
-    <div class="form-row">
-      <label class="form-label">카테고리</label>
-      <select class="form-sel" id="w-cat">
-        <option value="인사">인사</option><option value="일상">일상</option>
-        <option value="음식">음식</option><option value="쇼핑">쇼핑</option>
-        <option value="병원">병원</option><option value="교통">교통</option>
-        <option value="감정">감정</option><option value="가족">가족</option>
-        <option value="숫자">숫자</option><option value="날씨">날씨</option>
-        <option value="시간">시간</option><option value="직업">직업</option>
-        <option value="기타">기타</option>
-      </select>
-    </div>
-    <div class="sheet-btns">
-      <button class="sheet-cancel" onclick="closeSheet('wordOverlay')">취소</button>
-      <button class="sheet-save" id="wordSaveBtn" onclick="saveWord()">저장</button>
-    </div>
-  </div>
-</div>
+<!-- 단어 추가 -->
+<div class="ov" id="ov-word"><div class="sh"><div class="sh-handle"></div><h3 id="wshT">단어 추가</h3>
+  <div class="f2"><div><label class="fl">한국어 🇰🇷</label><input class="fi" id="w-kr" placeholder="안녕하세요"></div><div><label class="fl">베트남어 🇻🇳</label><input class="fi" id="w-vn" placeholder="Xin chào"></div></div>
+  <label class="fl">발음기호 (한글 발음)</label><input class="fi" id="w-pron" placeholder="씬 짜오">
+  <label class="fl">뜻/설명 (선택)</label><input class="fi" id="w-mean" placeholder="인사말">
+  <label class="fl">카테고리</label>
+  <select class="fsel" id="w-cat"><option>인사</option><option>일상</option><option>음식</option><option>쇼핑</option><option>병원</option><option>교통</option><option>감정</option><option>가족</option><option>숫자</option><option>날씨</option><option>시간</option><option>직업</option><option>신체</option><option>색깔</option><option>동물</option><option>학교</option><option>집</option><option>기타</option></select>
+  <div class="shbtns"><button class="shcancel" onclick="closeOv('ov-word')">취소</button><button class="shsave" id="wshBtn" onclick="saveWord()">저장</button></div>
+</div></div>
+
+<!-- 문장 추가 -->
+<div class="ov" id="ov-phrase"><div class="sh"><div class="sh-handle"></div><h3>문장 추가</h3>
+  <label class="fl">한국어 🇰🇷</label><textarea class="fta" id="p-kr" placeholder="예: 오늘 뭐 먹고 싶어?"></textarea>
+  <label class="fl">베트남어 🇻🇳</label><textarea class="fta" id="p-vn" placeholder="예: Hôm nay muốn ăn gì?"></textarea>
+  <label class="fl">카테고리</label>
+  <select class="fsel" id="p-cat"><option>일상대화</option><option>음식</option><option>쇼핑</option><option>감정표현</option><option>병원</option><option>가족</option><option>여행</option><option>기타</option></select>
+  <div class="shbtns"><button class="shcancel" onclick="closeOv('ov-phrase')">취소</button><button class="shsave" onclick="savePhrase()">저장</button></div>
+</div></div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// 기본 단어 데이터 (60개)
-// ═══════════════════════════════════════════════════════
-const DEFAULT_WORDS = [
-  // 인사
-  {id:1,kr:'안녕하세요',vn:'Xin chào',pron:'씬 짜오',cat:'인사'},
-  {id:2,kr:'잘 지내요?',vn:'Bạn có khỏe không?',pron:'반 꺼 쾨 콩?',cat:'인사'},
-  {id:3,kr:'감사합니다',vn:'Cảm ơn',pron:'깜 언',cat:'인사'},
-  {id:4,kr:'미안해요',vn:'Xin lỗi',pron:'씬 로이',cat:'인사'},
-  {id:5,kr:'천만에요',vn:'Không có gì',pron:'콩 꺼 지',cat:'인사'},
-  {id:6,kr:'잘 있어요',vn:'Tạm biệt',pron:'땀 비엣',cat:'인사'},
-  {id:7,kr:'반가워요',vn:'Rất vui được gặp bạn',pron:'럿 부이 드억 갑 반',cat:'인사'},
-  {id:8,kr:'처음 뵙겠습니다',vn:'Rất hân hạnh',pron:'럿 헌 하잉',cat:'인사'},
-  // 일상
-  {id:9,kr:'밥 먹었어요?',vn:'Ăn cơm chưa?',pron:'안 껌 쯔아?',cat:'일상'},
-  {id:10,kr:'어디 가요?',vn:'Đi đâu vậy?',pron:'디 더우 버이?',cat:'일상'},
-  {id:11,kr:'뭐 해요?',vn:'Đang làm gì vậy?',pron:'당 람 지 버이?',cat:'일상'},
-  {id:12,kr:'잠깐만요',vn:'Chờ một chút',pron:'쩌 못 쭛',cat:'일상'},
-  {id:13,kr:'화장실',vn:'Nhà vệ sinh',pron:'냐 베 씬',cat:'일상'},
-  {id:14,kr:'집',vn:'Nhà',pron:'냐',cat:'일상'},
-  {id:15,kr:'물',vn:'Nước',pron:'느억',cat:'일상'},
-  {id:16,kr:'전화',vn:'Điện thoại',pron:'디엔 토아이',cat:'일상'},
-  {id:17,kr:'인터넷',vn:'Internet',pron:'인터넷',cat:'일상'},
-  // 음식
-  {id:18,kr:'맛있어요',vn:'Ngon lắm',pron:'응온 람',cat:'음식'},
-  {id:19,kr:'배고파요',vn:'Tôi đói',pron:'또이 도이',cat:'음식'},
-  {id:20,kr:'물주세요',vn:'Cho tôi nước',pron:'쩌 또이 느억',cat:'음식'},
-  {id:21,kr:'쌀국수',vn:'Phở',pron:'퍼',cat:'음식'},
-  {id:22,kr:'아이스 커피',vn:'Cà phê sữa đá',pron:'까 페 스아 다',cat:'음식'},
-  {id:23,kr:'계란',vn:'Trứng',pron:'쯩',cat:'음식'},
-  {id:24,kr:'고기',vn:'Thịt',pron:'팃',cat:'음식'},
-  {id:25,kr:'채소',vn:'Rau',pron:'라우',cat:'음식'},
-  {id:26,kr:'국수',vn:'Mì',pron:'미',cat:'음식'},
-  {id:27,kr:'빵',vn:'Bánh mì',pron:'바잉 미',cat:'음식'},
-  // 쇼핑
-  {id:28,kr:'얼마예요?',vn:'Bao nhiêu tiền?',pron:'바오 니에우 띠엔?',cat:'쇼핑'},
-  {id:29,kr:'이거 주세요',vn:'Cho tôi cái này',pron:'쩌 또이 까이 나이',cat:'쇼핑'},
-  {id:30,kr:'너무 비싸요',vn:'Đắt quá',pron:'닷 꽈',cat:'쇼핑'},
-  {id:31,kr:'깎아주세요',vn:'Giảm giá cho tôi',pron:'지암 자 쩌 또이',cat:'쇼핑'},
-  {id:32,kr:'영수증',vn:'Hóa đơn',pron:'호아 던',cat:'쇼핑'},
-  {id:33,kr:'카드 돼요?',vn:'Thanh toán thẻ được không?',pron:'타잉 또안 테 드억 콩?',cat:'쇼핑'},
-  {id:34,kr:'사이즈',vn:'Size',pron:'사이즈',cat:'쇼핑'},
-  // 병원
-  {id:35,kr:'아파요',vn:'Tôi bị đau',pron:'또이 비 다우',cat:'병원'},
-  {id:36,kr:'병원',vn:'Bệnh viện',pron:'배잉 비엔',cat:'병원'},
-  {id:37,kr:'약',vn:'Thuốc',pron:'투옥',cat:'병원'},
-  {id:38,kr:'두통',vn:'Đau đầu',pron:'다우 더우',cat:'병원'},
-  {id:39,kr:'열이 나요',vn:'Tôi bị sốt',pron:'또이 비 솟',cat:'병원'},
-  {id:40,kr:'알레르기',vn:'Dị ứng',pron:'지 응',cat:'병원'},
-  // 교통
-  {id:41,kr:'지하철',vn:'Tàu điện ngầm',pron:'따우 디엔 음엄',cat:'교통'},
-  {id:42,kr:'버스',vn:'Xe buýt',pron:'쎄 붓',cat:'교통'},
-  {id:43,kr:'택시',vn:'Taxi',pron:'택씨',cat:'교통'},
-  {id:44,kr:'공항',vn:'Sân bay',pron:'선 바이',cat:'교통'},
-  {id:45,kr:'어디예요?',vn:'Ở đâu?',pron:'어 더우?',cat:'교통'},
-  {id:46,kr:'멀어요?',vn:'Có xa không?',pron:'꺼 싸 콩?',cat:'교통'},
-  // 감정
-  {id:47,kr:'사랑해요',vn:'Anh yêu em',pron:'아잉 이에우 앰',cat:'감정'},
-  {id:48,kr:'행복해요',vn:'Tôi hạnh phúc',pron:'또이 하잉 푹',cat:'감정'},
-  {id:49,kr:'슬퍼요',vn:'Tôi buồn',pron:'또이 부온',cat:'감정'},
-  {id:50,kr:'피곤해요',vn:'Tôi mệt',pron:'또이 맷',cat:'감정'},
-  {id:51,kr:'보고 싶어요',vn:'Tôi nhớ bạn',pron:'또이 녀 반',cat:'감정'},
-  {id:52,kr:'기뻐요',vn:'Tôi vui',pron:'또이 부이',cat:'감정'},
-  // 가족
-  {id:53,kr:'남편',vn:'Chồng',pron:'쫑',cat:'가족'},
-  {id:54,kr:'아내',vn:'Vợ',pron:'버',cat:'가족'},
-  {id:55,kr:'아들',vn:'Con trai',pron:'꼰 짜이',cat:'가족'},
-  {id:56,kr:'딸',vn:'Con gái',pron:'꼰 가이',cat:'가족'},
-  {id:57,kr:'부모님',vn:'Bố mẹ',pron:'보 매',cat:'가족'},
-  {id:58,kr:'시어머니',vn:'Mẹ chồng',pron:'매 쫑',cat:'가족'},
-  // 숫자/시간
-  {id:59,kr:'몇 시예요?',vn:'Mấy giờ rồi?',pron:'머이 지어 로이?',cat:'시간'},
-  {id:60,kr:'오늘',vn:'Hôm nay',pron:'홈 나이',cat:'시간'},
-  {id:61,kr:'내일',vn:'Ngày mai',pron:'응아이 마이',cat:'시간'},
-  {id:62,kr:'어제',vn:'Hôm qua',pron:'홈 꽈',cat:'시간'},
-  {id:63,kr:'아침',vn:'Buổi sáng',pron:'부오이 상',cat:'시간'},
-  {id:64,kr:'저녁',vn:'Buổi tối',pron:'부오이 또이',cat:'시간'},
-  // 날씨
-  {id:65,kr:'더워요',vn:'Nóng quá',pron:'농 꽈',cat:'날씨'},
-  {id:66,kr:'추워요',vn:'Lạnh quá',pron:'라잉 꽈',cat:'날씨'},
-  {id:67,kr:'비가 와요',vn:'Trời mưa',pron:'쩌이 므아',cat:'날씨'},
-  {id:68,kr:'맑아요',vn:'Trời đẹp',pron:'쩌이 뎁',cat:'날씨'},
+// ════════════════════════════════════════════════════
+// 단어 데이터 200개
+// ════════════════════════════════════════════════════
+const DW=[
+// 인사 (14)
+{id:1,kr:'안녕하세요',vn:'Xin chào',pron:'씬 짜오',mean:'범용 인사',cat:'인사'},
+{id:2,kr:'잘 지내요?',vn:'Bạn có khỏe không?',pron:'반 꺼 쾨 콩',mean:'안부 인사',cat:'인사'},
+{id:3,kr:'감사합니다',vn:'Cảm ơn',pron:'깜 언',mean:'고마움',cat:'인사'},
+{id:4,kr:'미안해요',vn:'Xin lỗi',pron:'씬 로이',mean:'사과',cat:'인사'},
+{id:5,kr:'천만에요',vn:'Không có gì',pron:'콩 꺼 지',mean:'괜찮아요',cat:'인사'},
+{id:6,kr:'잘 있어요',vn:'Tạm biệt',pron:'땀 비엣',mean:'작별 인사',cat:'인사'},
+{id:7,kr:'반가워요',vn:'Rất vui được gặp bạn',pron:'럿 부이 드억 갑 반',mean:'처음 만날 때',cat:'인사'},
+{id:8,kr:'잘 자요',vn:'Ngủ ngon',pron:'응우 응온',mean:'잘 자라는 인사',cat:'인사'},
+{id:9,kr:'좋은 아침',vn:'Chào buổi sáng',pron:'짜오 부오이 상',mean:'아침 인사',cat:'인사'},
+{id:10,kr:'오래간만이에요',vn:'Lâu rồi không gặp',pron:'러우 로이 콩 갑',mean:'오랜만이에요',cat:'인사'},
+{id:11,kr:'네',vn:'Vâng / Dạ',pron:'방 / 자',mean:'긍정',cat:'인사'},
+{id:12,kr:'아니요',vn:'Không',pron:'콩',mean:'부정',cat:'인사'},
+{id:13,kr:'어서 오세요',vn:'Xin mời vào',pron:'씬 머이 바오',mean:'환영 인사',cat:'인사'},
+{id:14,kr:'또 봐요',vn:'Hẹn gặp lại',pron:'헨 갑 라이',mean:'다시 만나요',cat:'인사'},
+// 일상 (16)
+{id:15,kr:'밥 먹었어요?',vn:'Ăn cơm chưa?',pron:'안 껌 쯔아',mean:'일상 안부',cat:'일상'},
+{id:16,kr:'어디 가요?',vn:'Đi đâu vậy?',pron:'디 더우 버이',mean:'',cat:'일상'},
+{id:17,kr:'잠깐만요',vn:'Chờ một chút',pron:'쩌 못 쭛',mean:'기다려요',cat:'일상'},
+{id:18,kr:'화장실',vn:'Nhà vệ sinh',pron:'냐 베 씬',mean:'toilet',cat:'일상'},
+{id:19,kr:'물',vn:'Nước',pron:'느억',mean:'water',cat:'일상'},
+{id:20,kr:'전화',vn:'Điện thoại',pron:'디엔 토아이',mean:'phone',cat:'일상'},
+{id:21,kr:'집',vn:'Nhà',pron:'냐',mean:'house/home',cat:'일상'},
+{id:22,kr:'이름',vn:'Tên',pron:'뗀',mean:'name',cat:'일상'},
+{id:23,kr:'돈',vn:'Tiền',pron:'띠엔',mean:'money',cat:'일상'},
+{id:24,kr:'시장',vn:'Chợ',pron:'쩌',mean:'market',cat:'일상'},
+{id:25,kr:'은행',vn:'Ngân hàng',pron:'응언 항',mean:'bank',cat:'일상'},
+{id:26,kr:'편의점',vn:'Cửa hàng tiện lợi',pron:'끄아 항 띠엔 러이',mean:'convenience store',cat:'일상'},
+{id:27,kr:'주소',vn:'Địa chỉ',pron:'디아 찌',mean:'address',cat:'일상'},
+{id:28,kr:'인터넷',vn:'Internet',pron:'인터넷',mean:'internet',cat:'일상'},
+{id:29,kr:'날씨',vn:'Thời tiết',pron:'터이 띠엣',mean:'weather',cat:'일상'},
+{id:30,kr:'나이',vn:'Tuổi',pron:'뚜오이',mean:'age',cat:'일상'},
+// 음식 (20)
+{id:31,kr:'맛있어요',vn:'Ngon lắm',pron:'응온 람',mean:'delicious',cat:'음식'},
+{id:32,kr:'배고파요',vn:'Tôi đói',pron:'또이 도이',mean:'I\'m hungry',cat:'음식'},
+{id:33,kr:'쌀국수',vn:'Phở',pron:'퍼',mean:'베트남 국수',cat:'음식'},
+{id:34,kr:'아이스 커피',vn:'Cà phê sữa đá',pron:'까 페 스아 다',mean:'베트남 아이스커피',cat:'음식'},
+{id:35,kr:'계란',vn:'Trứng',pron:'쯩',mean:'egg',cat:'음식'},
+{id:36,kr:'고기',vn:'Thịt',pron:'팃',mean:'meat',cat:'음식'},
+{id:37,kr:'채소',vn:'Rau',pron:'라우',mean:'vegetable',cat:'음식'},
+{id:38,kr:'빵',vn:'Bánh mì',pron:'바잉 미',mean:'banh mi bread',cat:'음식'},
+{id:39,kr:'쌀',vn:'Gạo',pron:'가오',mean:'rice (raw)',cat:'음식'},
+{id:40,kr:'밥',vn:'Cơm',pron:'껌',mean:'cooked rice',cat:'음식'},
+{id:41,kr:'돼지고기',vn:'Thịt lợn',pron:'팃 런',mean:'pork',cat:'음식'},
+{id:42,kr:'소고기',vn:'Thịt bò',pron:'팃 보',mean:'beef',cat:'음식'},
+{id:43,kr:'해산물',vn:'Hải sản',pron:'하이 산',mean:'seafood',cat:'음식'},
+{id:44,kr:'과일',vn:'Trái cây',pron:'짜이 꺼이',mean:'fruit',cat:'음식'},
+{id:45,kr:'맵다',vn:'Cay',pron:'까이',mean:'spicy',cat:'음식'},
+{id:46,kr:'달다',vn:'Ngọt',pron:'응옷',mean:'sweet',cat:'음식'},
+{id:47,kr:'짜다',vn:'Mặn',pron:'만',mean:'salty',cat:'음식'},
+{id:48,kr:'시다',vn:'Chua',pron:'쭈아',mean:'sour',cat:'음식'},
+{id:49,kr:'쓰다',vn:'Đắng',pron:'당',mean:'bitter',cat:'음식'},
+{id:50,kr:'차갑다',vn:'Lạnh',pron:'라잉',mean:'cold (food)',cat:'음식'},
+// 쇼핑 (10)
+{id:51,kr:'얼마예요?',vn:'Bao nhiêu tiền?',pron:'바오 니에우 띠엔',mean:'how much?',cat:'쇼핑'},
+{id:52,kr:'이거 주세요',vn:'Cho tôi cái này',pron:'쩌 또이 까이 나이',mean:'I\'ll take this',cat:'쇼핑'},
+{id:53,kr:'너무 비싸요',vn:'Đắt quá',pron:'닷 꽈',mean:'too expensive',cat:'쇼핑'},
+{id:54,kr:'깎아주세요',vn:'Giảm giá cho tôi',pron:'지암 자 쩌 또이',mean:'give me discount',cat:'쇼핑'},
+{id:55,kr:'영수증',vn:'Hóa đơn',pron:'호아 던',mean:'receipt',cat:'쇼핑'},
+{id:56,kr:'카드 돼요?',vn:'Trả thẻ được không?',pron:'짜 테 드억 콩',mean:'can I pay by card?',cat:'쇼핑'},
+{id:57,kr:'사이즈',vn:'Kích cỡ',pron:'낏 꺼',mean:'size',cat:'쇼핑'},
+{id:58,kr:'교환',vn:'Đổi hàng',pron:'도이 항',mean:'exchange',cat:'쇼핑'},
+{id:59,kr:'환불',vn:'Hoàn tiền',pron:'호안 띠엔',mean:'refund',cat:'쇼핑'},
+{id:60,kr:'세일',vn:'Giảm giá',pron:'지암 자',mean:'sale/discount',cat:'쇼핑'},
+// 병원 (10)
+{id:61,kr:'아파요',vn:'Tôi bị đau',pron:'또이 비 다우',mean:'I\'m sick/hurt',cat:'병원'},
+{id:62,kr:'병원',vn:'Bệnh viện',pron:'배잉 비엔',mean:'hospital',cat:'병원'},
+{id:63,kr:'약',vn:'Thuốc',pron:'투옥',mean:'medicine',cat:'병원'},
+{id:64,kr:'두통',vn:'Đau đầu',pron:'다우 더우',mean:'headache',cat:'병원'},
+{id:65,kr:'열이 나요',vn:'Tôi bị sốt',pron:'또이 비 솟',mean:'I have a fever',cat:'병원'},
+{id:66,kr:'배가 아파요',vn:'Đau bụng',pron:'다우 붕',mean:'stomachache',cat:'병원'},
+{id:67,kr:'알레르기',vn:'Dị ứng',pron:'지 응',mean:'allergy',cat:'병원'},
+{id:68,kr:'의사',vn:'Bác sĩ',pron:'박 씨',mean:'doctor',cat:'병원'},
+{id:69,kr:'구급차',vn:'Xe cấp cứu',pron:'쎄 껍 끄우',mean:'ambulance',cat:'병원'},
+{id:70,kr:'처방전',vn:'Đơn thuốc',pron:'던 투옥',mean:'prescription',cat:'병원'},
+// 교통 (10)
+{id:71,kr:'지하철',vn:'Tàu điện ngầm',pron:'따우 디엔 음엄',mean:'subway',cat:'교통'},
+{id:72,kr:'버스',vn:'Xe buýt',pron:'쎄 붓',mean:'bus',cat:'교통'},
+{id:73,kr:'택시',vn:'Taxi',pron:'택씨',mean:'taxi',cat:'교통'},
+{id:74,kr:'공항',vn:'Sân bay',pron:'선 바이',mean:'airport',cat:'교통'},
+{id:75,kr:'기차',vn:'Tàu hỏa',pron:'따우 호아',mean:'train',cat:'교통'},
+{id:76,kr:'비행기',vn:'Máy bay',pron:'마이 바이',mean:'airplane',cat:'교통'},
+{id:77,kr:'오른쪽',vn:'Bên phải',pron:'벤 파이',mean:'right',cat:'교통'},
+{id:78,kr:'왼쪽',vn:'Bên trái',pron:'벤 짜이',mean:'left',cat:'교통'},
+{id:79,kr:'직진',vn:'Đi thẳng',pron:'디 탕',mean:'go straight',cat:'교통'},
+{id:80,kr:'멀어요?',vn:'Có xa không?',pron:'꺼 싸 콩',mean:'is it far?',cat:'교통'},
+// 감정 (12)
+{id:81,kr:'사랑해요',vn:'Anh yêu em',pron:'아잉 이에우 앰',mean:'I love you (남→여)',cat:'감정'},
+{id:82,kr:'행복해요',vn:'Tôi hạnh phúc',pron:'또이 하잉 푹',mean:'I\'m happy',cat:'감정'},
+{id:83,kr:'슬퍼요',vn:'Tôi buồn',pron:'또이 부온',mean:'I\'m sad',cat:'감정'},
+{id:84,kr:'피곤해요',vn:'Tôi mệt',pron:'또이 맷',mean:'I\'m tired',cat:'감정'},
+{id:85,kr:'보고 싶어요',vn:'Tôi nhớ bạn',pron:'또이 녀 반',mean:'I miss you',cat:'감정'},
+{id:86,kr:'화났어요',vn:'Tôi tức giận',pron:'또이 뚝 전',mean:'I\'m angry',cat:'감정'},
+{id:87,kr:'무서워요',vn:'Tôi sợ',pron:'또이 써',mean:'I\'m scared',cat:'감정'},
+{id:88,kr:'걱정돼요',vn:'Tôi lo lắng',pron:'또이 로 랑',mean:'I\'m worried',cat:'감정'},
+{id:89,kr:'기뻐요',vn:'Tôi vui',pron:'또이 부이',mean:'I\'m glad',cat:'감정'},
+{id:90,kr:'놀랐어요',vn:'Tôi ngạc nhiên',pron:'또이 응악 니엔',mean:'I\'m surprised',cat:'감정'},
+{id:91,kr:'지루해요',vn:'Tôi chán',pron:'또이 짠',mean:'I\'m bored',cat:'감정'},
+{id:92,kr:'설레요',vn:'Tôi hồi hộp',pron:'또이 호이 홉',mean:'I\'m excited/nervous',cat:'감정'},
+// 가족 (10)
+{id:93,kr:'남편',vn:'Chồng',pron:'쫑',mean:'husband',cat:'가족'},
+{id:94,kr:'아내',vn:'Vợ',pron:'버',mean:'wife',cat:'가족'},
+{id:95,kr:'아들',vn:'Con trai',pron:'꼰 짜이',mean:'son',cat:'가족'},
+{id:96,kr:'딸',vn:'Con gái',pron:'꼰 가이',mean:'daughter',cat:'가족'},
+{id:97,kr:'아버지',vn:'Bố / Ba',pron:'보 / 바',mean:'father',cat:'가족'},
+{id:98,kr:'어머니',vn:'Mẹ',pron:'매',mean:'mother',cat:'가족'},
+{id:99,kr:'시어머니',vn:'Mẹ chồng',pron:'매 쫑',mean:'mother-in-law',cat:'가족'},
+{id:100,kr:'할머니',vn:'Bà',pron:'바',mean:'grandmother',cat:'가족'},
+{id:101,kr:'할아버지',vn:'Ông',pron:'옹',mean:'grandfather',cat:'가족'},
+{id:102,kr:'아기',vn:'Em bé',pron:'앰 베',mean:'baby',cat:'가족'},
+// 숫자 (12)
+{id:103,kr:'1',vn:'Một',pron:'못',mean:'one',cat:'숫자'},
+{id:104,kr:'2',vn:'Hai',pron:'하이',mean:'two',cat:'숫자'},
+{id:105,kr:'3',vn:'Ba',pron:'바',mean:'three',cat:'숫자'},
+{id:106,kr:'4',vn:'Bốn',pron:'본',mean:'four',cat:'숫자'},
+{id:107,kr:'5',vn:'Năm',pron:'남',mean:'five',cat:'숫자'},
+{id:108,kr:'6',vn:'Sáu',pron:'사우',mean:'six',cat:'숫자'},
+{id:109,kr:'7',vn:'Bảy',pron:'바이',mean:'seven',cat:'숫자'},
+{id:110,kr:'8',vn:'Tám',pron:'땀',mean:'eight',cat:'숫자'},
+{id:111,kr:'9',vn:'Chín',pron:'찐',mean:'nine',cat:'숫자'},
+{id:112,kr:'10',vn:'Mười',pron:'므어이',mean:'ten',cat:'숫자'},
+{id:113,kr:'100',vn:'Một trăm',pron:'못 짬',mean:'hundred',cat:'숫자'},
+{id:114,kr:'1000',vn:'Một nghìn',pron:'못 응인',mean:'thousand',cat:'숫자'},
+// 시간 (10)
+{id:115,kr:'오늘',vn:'Hôm nay',pron:'홈 나이',mean:'today',cat:'시간'},
+{id:116,kr:'내일',vn:'Ngày mai',pron:'응아이 마이',mean:'tomorrow',cat:'시간'},
+{id:117,kr:'어제',vn:'Hôm qua',pron:'홈 꽈',mean:'yesterday',cat:'시간'},
+{id:118,kr:'지금',vn:'Bây giờ',pron:'버이 지어',mean:'now',cat:'시간'},
+{id:119,kr:'아침',vn:'Buổi sáng',pron:'부오이 상',mean:'morning',cat:'시간'},
+{id:120,kr:'점심',vn:'Buổi trưa',pron:'부오이 쯔아',mean:'noon/lunch',cat:'시간'},
+{id:121,kr:'저녁',vn:'Buổi tối',pron:'부오이 또이',mean:'evening',cat:'시간'},
+{id:122,kr:'주말',vn:'Cuối tuần',pron:'꾸오이 뚠',mean:'weekend',cat:'시간'},
+{id:123,kr:'몇 시예요?',vn:'Mấy giờ rồi?',pron:'머이 지어 로이',mean:'what time?',cat:'시간'},
+{id:124,kr:'빨리',vn:'Nhanh lên',pron:'냐잉 렌',mean:'hurry up',cat:'시간'},
+// 날씨 (8)
+{id:125,kr:'더워요',vn:'Nóng quá',pron:'농 꽈',mean:'hot',cat:'날씨'},
+{id:126,kr:'추워요',vn:'Lạnh quá',pron:'라잉 꽈',mean:'cold',cat:'날씨'},
+{id:127,kr:'비가 와요',vn:'Trời mưa',pron:'쩌이 므아',mean:'raining',cat:'날씨'},
+{id:128,kr:'맑아요',vn:'Trời đẹp',pron:'쩌이 뎁',mean:'nice weather',cat:'날씨'},
+{id:129,kr:'바람',vn:'Gió',pron:'지오',mean:'wind',cat:'날씨'},
+{id:130,kr:'눈',vn:'Tuyết',pron:'뚜이엣',mean:'snow',cat:'날씨'},
+{id:131,kr:'흐려요',vn:'Trời흐림',pron:'쩌이 음',mean:'cloudy',cat:'날씨'},
+{id:132,kr:'태풍',vn:'Bão',pron:'바오',mean:'typhoon',cat:'날씨'},
+// 신체 (10)
+{id:133,kr:'머리',vn:'Đầu',pron:'더우',mean:'head',cat:'신체'},
+{id:134,kr:'눈',vn:'Mắt',pron:'맛',mean:'eyes',cat:'신체'},
+{id:135,kr:'코',vn:'Mũi',pron:'무이',mean:'nose',cat:'신체'},
+{id:136,kr:'입',vn:'Miệng',pron:'미엥',mean:'mouth',cat:'신체'},
+{id:137,kr:'귀',vn:'Tai',pron:'따이',mean:'ear',cat:'신체'},
+{id:138,kr:'손',vn:'Tay',pron:'따이',mean:'hand',cat:'신체'},
+{id:139,kr:'발',vn:'Chân',pron:'쩐',mean:'foot',cat:'신체'},
+{id:140,kr:'배',vn:'Bụng',pron:'붕',mean:'belly',cat:'신체'},
+{id:141,kr:'등',vn:'Lưng',pron:'릉',mean:'back',cat:'신체'},
+{id:142,kr:'심장',vn:'Tim',pron:'띰',mean:'heart',cat:'신체'},
+// 색깔 (8)
+{id:143,kr:'빨간색',vn:'Màu đỏ',pron:'마우 도',mean:'red',cat:'색깔'},
+{id:144,kr:'파란색',vn:'Màu xanh dương',pron:'마우 싸잉 즈엉',mean:'blue',cat:'색깔'},
+{id:145,kr:'초록색',vn:'Màu xanh lá',pron:'마우 싸잉 라',mean:'green',cat:'색깔'},
+{id:146,kr:'노란색',vn:'Màu vàng',pron:'마우 방',mean:'yellow',cat:'색깔'},
+{id:147,kr:'하얀색',vn:'Màu trắng',pron:'마우 짱',mean:'white',cat:'색깔'},
+{id:148,kr:'검은색',vn:'Màu đen',pron:'마우 덴',mean:'black',cat:'색깔'},
+{id:149,kr:'분홍색',vn:'Màu hồng',pron:'마우 홍',mean:'pink',cat:'색깔'},
+{id:150,kr:'보라색',vn:'Màu tím',pron:'마우 띰',mean:'purple',cat:'색깔'},
+// 동물 (8)
+{id:151,kr:'강아지',vn:'Chó con',pron:'쩌 꼰',mean:'dog/puppy',cat:'동물'},
+{id:152,kr:'고양이',vn:'Mèo',pron:'매오',mean:'cat',cat:'동물'},
+{id:153,kr:'소',vn:'Bò',pron:'보',mean:'cow',cat:'동물'},
+{id:154,kr:'돼지',vn:'Lợn',pron:'런',mean:'pig',cat:'동물'},
+{id:155,kr:'닭',vn:'Gà',pron:'가',mean:'chicken',cat:'동물'},
+{id:156,kr:'물고기',vn:'Cá',pron:'까',mean:'fish',cat:'동물'},
+{id:157,kr:'새',vn:'Chim',pron:'찜',mean:'bird',cat:'동물'},
+{id:158,kr:'호랑이',vn:'Hổ',pron:'호',mean:'tiger',cat:'동물'},
+// 직업 (10)
+{id:159,kr:'의사',vn:'Bác sĩ',pron:'박 씨',mean:'doctor',cat:'직업'},
+{id:160,kr:'선생님',vn:'Giáo viên',pron:'자오 비엔',mean:'teacher',cat:'직업'},
+{id:161,kr:'요리사',vn:'Đầu bếp',pron:'더우 벱',mean:'chef/cook',cat:'직업'},
+{id:162,kr:'경찰',vn:'Cảnh sát',pron:'까잉 삿',mean:'police',cat:'직업'},
+{id:163,kr:'운전기사',vn:'Tài xế',pron:'따이 쎄',mean:'driver',cat:'직업'},
+{id:164,kr:'회사원',vn:'Nhân viên công ty',pron:'년 비엔 콩 띠',mean:'office worker',cat:'직업'},
+{id:165,kr:'사업가',vn:'Doanh nhân',pron:'조아잉 년',mean:'businessman',cat:'직업'},
+{id:166,kr:'학생',vn:'Học sinh',pron:'혹 씬',mean:'student',cat:'직업'},
+{id:167,kr:'주부',vn:'Nội trợ',pron:'노이 쩌',mean:'housewife',cat:'직업'},
+{id:168,kr:'간호사',vn:'Y tá',pron:'이 따',mean:'nurse',cat:'직업'},
+// 집 (10)
+{id:169,kr:'침실',vn:'Phòng ngủ',pron:'퐁 응우',mean:'bedroom',cat:'집'},
+{id:170,kr:'거실',vn:'Phòng khách',pron:'퐁 카익',mean:'living room',cat:'집'},
+{id:171,kr:'부엌',vn:'Bếp',pron:'벱',mean:'kitchen',cat:'집'},
+{id:172,kr:'욕실',vn:'Phòng tắm',pron:'퐁 땀',mean:'bathroom',cat:'집'},
+{id:173,kr:'창문',vn:'Cửa sổ',pron:'끄아 쏘',mean:'window',cat:'집'},
+{id:174,kr:'문',vn:'Cửa',pron:'끄아',mean:'door',cat:'집'},
+{id:175,kr:'테이블',vn:'Bàn',pron:'반',mean:'table',cat:'집'},
+{id:176,kr:'의자',vn:'Ghế',pron:'게',mean:'chair',cat:'집'},
+{id:177,kr:'냉장고',vn:'Tủ lạnh',pron:'뚜 라잉',mean:'refrigerator',cat:'집'},
+{id:178,kr:'세탁기',vn:'Máy giặt',pron:'마이 짯',mean:'washing machine',cat:'집'},
+// 학교 (10)
+{id:179,kr:'학교',vn:'Trường học',pron:'쯔엉 혹',mean:'school',cat:'학교'},
+{id:180,kr:'교실',vn:'Lớp học',pron:'럽 혹',mean:'classroom',cat:'학교'},
+{id:181,kr:'책',vn:'Sách',pron:'사익',mean:'book',cat:'학교'},
+{id:182,kr:'공부',vn:'Học bài',pron:'혹 바이',mean:'studying',cat:'학교'},
+{id:183,kr:'숙제',vn:'Bài tập về nhà',pron:'바이 땁 베 냐',mean:'homework',cat:'학교'},
+{id:184,kr:'시험',vn:'Thi / Kiểm tra',pron:'티 / 끼엠 짜',mean:'exam/test',cat:'학교'},
+{id:185,kr:'성적',vn:'Điểm số',pron:'디엠 쏘',mean:'grade/score',cat:'학교'},
+{id:186,kr:'졸업',vn:'Tốt nghiệp',pron:'똣 응이엡',mean:'graduation',cat:'학교'},
+{id:187,kr:'친구',vn:'Bạn bè',pron:'반 베',mean:'friend',cat:'학교'},
+{id:188,kr:'동아리',vn:'Câu lạc bộ',pron:'꺼우 락 보',mean:'club/activity',cat:'학교'},
+// 기타 기본 (12)
+{id:189,kr:'예뻐요',vn:'Đẹp lắm',pron:'뎁 람',mean:'so pretty',cat:'기타'},
+{id:190,kr:'잘생겼어요',vn:'Đẹp trai',pron:'뎁 짜이',mean:'handsome',cat:'기타'},
+{id:191,kr:'크다',vn:'To / Lớn',pron:'또 / 런',mean:'big',cat:'기타'},
+{id:192,kr:'작다',vn:'Nhỏ',pron:'뇨',mean:'small',cat:'기타'},
+{id:193,kr:'많다',vn:'Nhiều',pron:'니에우',mean:'many',cat:'기타'},
+{id:194,kr:'적다',vn:'Ít',pron:'잇',mean:'few',cat:'기타'},
+{id:195,kr:'어렵다',vn:'Khó',pron:'커',mean:'difficult',cat:'기타'},
+{id:196,kr:'쉽다',vn:'Dễ',pron:'제',mean:'easy',cat:'기타'},
+{id:197,kr:'함께',vn:'Cùng nhau',pron:'꿍 냐우',mean:'together',cat:'기타'},
+{id:198,kr:'괜찮아요',vn:'Không sao',pron:'콩 사오',mean:'it\'s okay',cat:'기타'},
+{id:199,kr:'맞아요',vn:'Đúng rồi',pron:'둥 로이',mean:'that\'s right',cat:'기타'},
+{id:200,kr:'틀려요',vn:'Sai rồi',pron:'사이 로이',mean:'that\'s wrong',cat:'기타'},
+
+// ─── TOPIK 2→3급 동사 (30) ───
+{id:201,kr:'먹다',vn:'Ăn',pron:'안',mean:'to eat',cat:'동사'},
+{id:202,kr:'마시다',vn:'Uống',pron:'우옹',mean:'to drink',cat:'동사'},
+{id:203,kr:'자다',vn:'Ngủ',pron:'응우',mean:'to sleep',cat:'동사'},
+{id:204,kr:'일어나다',vn:'Thức dậy',pron:'특 저이',mean:'to wake up',cat:'동사'},
+{id:205,kr:'가다',vn:'Đi',pron:'디',mean:'to go',cat:'동사'},
+{id:206,kr:'오다',vn:'Đến / Đi đến',pron:'덴',mean:'to come',cat:'동사'},
+{id:207,kr:'사다',vn:'Mua',pron:'무아',mean:'to buy',cat:'동사'},
+{id:208,kr:'팔다',vn:'Bán',pron:'반',mean:'to sell',cat:'동사'},
+{id:209,kr:'만들다',vn:'Làm / Tạo',pron:'람',mean:'to make',cat:'동사'},
+{id:210,kr:'읽다',vn:'Đọc',pron:'독',mean:'to read',cat:'동사'},
+{id:211,kr:'쓰다',vn:'Viết',pron:'비엣',mean:'to write',cat:'동사'},
+{id:212,kr:'듣다',vn:'Nghe',pron:'응에',mean:'to listen',cat:'동사'},
+{id:213,kr:'보다',vn:'Xem / Nhìn',pron:'쎔',mean:'to see/watch',cat:'동사'},
+{id:214,kr:'말하다',vn:'Nói',pron:'노이',mean:'to speak',cat:'동사'},
+{id:215,kr:'생각하다',vn:'Suy nghĩ',pron:'수이 응이',mean:'to think',cat:'동사'},
+{id:216,kr:'알다',vn:'Biết',pron:'비엣',mean:'to know',cat:'동사'},
+{id:217,kr:'모르다',vn:'Không biết',pron:'콩 비엣',mean:'to not know',cat:'동사'},
+{id:218,kr:'좋아하다',vn:'Thích',pron:'틱',mean:'to like',cat:'동사'},
+{id:219,kr:'싫어하다',vn:'Ghét',pron:'겟',mean:'to dislike/hate',cat:'동사'},
+{id:220,kr:'원하다',vn:'Muốn',pron:'무온',mean:'to want',cat:'동사'},
+{id:221,kr:'도와주다',vn:'Giúp đỡ',pron:'쥡 더',mean:'to help',cat:'동사'},
+{id:222,kr:'기다리다',vn:'Chờ đợi',pron:'쩌 더이',mean:'to wait',cat:'동사'},
+{id:223,kr:'시작하다',vn:'Bắt đầu',pron:'밧 더우',mean:'to start',cat:'동사'},
+{id:224,kr:'끝내다',vn:'Kết thúc',pron:'껫 툭',mean:'to finish',cat:'동사'},
+{id:225,kr:'가르치다',vn:'Dạy',pron:'저이',mean:'to teach',cat:'동사'},
+{id:226,kr:'배우다',vn:'Học',pron:'혹',mean:'to learn',cat:'동사'},
+{id:227,kr:'연습하다',vn:'Luyện tập',pron:'루이엔 땁',mean:'to practice',cat:'동사'},
+{id:228,kr:'준비하다',vn:'Chuẩn bị',pron:'쭈언 비',mean:'to prepare',cat:'동사'},
+{id:229,kr:'청소하다',vn:'Dọn dẹp',pron:'전 뎁',mean:'to clean',cat:'동사'},
+{id:230,kr:'요리하다',vn:'Nấu ăn',pron:'너우 안',mean:'to cook',cat:'동사'},
+
+// ─── TOPIK 2→3급 형용사 (20) ───
+{id:231,kr:'바쁘다',vn:'Bận',pron:'반',mean:'busy',cat:'형용사'},
+{id:232,kr:'한가하다',vn:'Rảnh',pron:'라잉',mean:'free/not busy',cat:'형용사'},
+{id:233,kr:'조용하다',vn:'Yên tĩnh',pron:'이엔 띵',mean:'quiet',cat:'형용사'},
+{id:234,kr:'시끄럽다',vn:'Ồn ào',pron:'온 아오',mean:'noisy/loud',cat:'형용사'},
+{id:235,kr:'깨끗하다',vn:'Sạch sẽ',pron:'사익 쎄',mean:'clean',cat:'형용사'},
+{id:236,kr:'더럽다',vn:'Bẩn',pron:'번',mean:'dirty',cat:'형용사'},
+{id:237,kr:'무겁다',vn:'Nặng',pron:'낭',mean:'heavy',cat:'형용사'},
+{id:238,kr:'가볍다',vn:'Nhẹ',pron:'녜',mean:'light',cat:'형용사'},
+{id:239,kr:'빠르다',vn:'Nhanh',pron:'냐잉',mean:'fast',cat:'형용사'},
+{id:240,kr:'느리다',vn:'Chậm',pron:'쩜',mean:'slow',cat:'형용사'},
+{id:241,kr:'건강하다',vn:'Khỏe mạnh',pron:'쾨 마잉',mean:'healthy',cat:'형용사'},
+{id:242,kr:'아프다',vn:'Đau / Bệnh',pron:'다우',mean:'sick/hurt',cat:'형용사'},
+{id:243,kr:'재미있다',vn:'Thú vị',pron:'투 비',mean:'interesting/fun',cat:'형용사'},
+{id:244,kr:'재미없다',vn:'Chán',pron:'짠',mean:'boring',cat:'형용사'},
+{id:245,kr:'비슷하다',vn:'Giống nhau / Tương tự',pron:'지옹 냐우',mean:'similar',cat:'형용사'},
+{id:246,kr:'다르다',vn:'Khác nhau',pron:'칵 냐우',mean:'different',cat:'형용사'},
+{id:247,kr:'중요하다',vn:'Quan trọng',pron:'꽌 쫑',mean:'important',cat:'형용사'},
+{id:248,kr:'필요하다',vn:'Cần thiết',pron:'껀 티엣',mean:'necessary',cat:'형용사'},
+{id:249,kr:'위험하다',vn:'Nguy hiểm',pron:'응우이 히엠',mean:'dangerous',cat:'형용사'},
+{id:250,kr:'안전하다',vn:'An toàn',pron:'안 또안',mean:'safe',cat:'형용사'},
+
+// ─── 2→3급 표현/회화 (25) ───
+{id:251,kr:'제 말이요',vn:'Ý tôi là',pron:'이 또이 라',mean:'What I mean is',cat:'표현'},
+{id:252,kr:'다시 말해줄래요?',vn:'Bạn nói lại được không?',pron:'반 노이 라이 드억 콩',mean:'Can you say again?',cat:'표현'},
+{id:253,kr:'천천히 말해주세요',vn:'Nói chậm thôi',pron:'노이 쩜 토이',mean:'Please speak slowly',cat:'표현'},
+{id:254,kr:'잘 모르겠어요',vn:'Tôi không hiểu lắm',pron:'또이 콩 히에우 람',mean:'I\'m not sure',cat:'표현'},
+{id:255,kr:'이해했어요',vn:'Tôi hiểu rồi',pron:'또이 히에우 로이',mean:'I understand now',cat:'표현'},
+{id:256,kr:'좀 더 설명해주세요',vn:'Giải thích thêm cho tôi',pron:'지아이 틱 템 쩌 또이',mean:'Please explain more',cat:'표현'},
+{id:257,kr:'얼마나 걸려요?',vn:'Mất bao lâu?',pron:'맛 바오 러우',mean:'How long does it take?',cat:'표현'},
+{id:258,kr:'언제까지예요?',vn:'Đến khi nào?',pron:'덴 키 나오',mean:'Until when?',cat:'표현'},
+{id:259,kr:'어떻게 해요?',vn:'Làm thế nào?',pron:'람 테 나오',mean:'How do I do it?',cat:'표현'},
+{id:260,kr:'왜요?',vn:'Tại sao?',pron:'따이 사오',mean:'Why?',cat:'표현'},
+{id:261,kr:'누구예요?',vn:'Là ai vậy?',pron:'라 아이 버이',mean:'Who is it?',cat:'표현'},
+{id:262,kr:'물론이죠',vn:'Tất nhiên rồi',pron:'땃 니엔 로이',mean:'Of course',cat:'표현'},
+{id:263,kr:'혹시 알아요?',vn:'Bạn có biết không?',pron:'반 꺼 비엣 콩',mean:'By any chance, do you know?',cat:'표현'},
+{id:264,kr:'가능해요?',vn:'Có thể được không?',pron:'꺼 테 드억 콩',mean:'Is it possible?',cat:'표현'},
+{id:265,kr:'그럼요',vn:'Vâng, đúng rồi',pron:'방 둥 로이',mean:'Sure/That\'s right',cat:'표현'},
+{id:266,kr:'아마도',vn:'Có lẽ',pron:'꺼 레',mean:'Maybe/Perhaps',cat:'표현'},
+{id:267,kr:'특히',vn:'Đặc biệt là',pron:'닥 비엣 라',mean:'especially',cat:'표현'},
+{id:268,kr:'보통',vn:'Thường thường',pron:'트엉 트엉',mean:'usually/normally',cat:'표현'},
+{id:269,kr:'가끔',vn:'Thỉnh thoảng',pron:'팅 토앙',mean:'sometimes',cat:'표현'},
+{id:270,kr:'항상',vn:'Luôn luôn',pron:'루온 루온',mean:'always',cat:'표현'},
+{id:271,kr:'절대로',vn:'Tuyệt đối không',pron:'뚜이엣 도이 콩',mean:'never/absolutely not',cat:'표현'},
+{id:272,kr:'드디어',vn:'Cuối cùng',pron:'꾸오이 꿍',mean:'finally/at last',cat:'표현'},
+{id:273,kr:'갑자기',vn:'Đột nhiên',pron:'돗 니엔',mean:'suddenly',cat:'표현'},
+{id:274,kr:'그러니까',vn:'Vì vậy / Nên là',pron:'비 버이',mean:'so/therefore/that\'s why',cat:'표현'},
+{id:275,kr:'그런데',vn:'Nhưng mà / Vậy mà',pron:'니엉 마',mean:'but/however/by the way',cat:'표현'},
+
+// ─── 2→3급 사회생활 (20) ───
+{id:276,kr:'회의',vn:'Cuộc họp',pron:'꾸옥 홉',mean:'meeting',cat:'직장'},
+{id:277,kr:'보고서',vn:'Báo cáo',pron:'바오 까오',mean:'report',cat:'직장'},
+{id:278,kr:'계획',vn:'Kế hoạch',pron:'께 호아익',mean:'plan',cat:'직장'},
+{id:279,kr:'계약',vn:'Hợp đồng',pron:'헙 동',mean:'contract',cat:'직장'},
+{id:280,kr:'월급',vn:'Lương',pron:'릉',mean:'salary/monthly pay',cat:'직장'},
+{id:281,kr:'야근',vn:'Làm thêm giờ',pron:'람 템 지어',mean:'overtime work',cat:'직장'},
+{id:282,kr:'휴가',vn:'Nghỉ phép',pron:'응이 펩',mean:'vacation/leave',cat:'직장'},
+{id:283,kr:'출장',vn:'Công tác',pron:'콩 딱',mean:'business trip',cat:'직장'},
+{id:284,kr:'승진',vn:'Thăng chức',pron:'탕 쭉',mean:'promotion',cat:'직장'},
+{id:285,kr:'퇴근',vn:'Tan làm',pron:'딴 람',mean:'leaving work',cat:'직장'},
+{id:286,kr:'출근',vn:'Đi làm',pron:'디 람',mean:'going to work',cat:'직장'},
+{id:287,kr:'부탁',vn:'Nhờ vả / Nhờ giúp',pron:'녀 바',mean:'request/favor',cat:'직장'},
+{id:288,kr:'허락',vn:'Cho phép',pron:'쩌 펩',mean:'permission',cat:'직장'},
+{id:289,kr:'실수',vn:'Lỗi lầm',pron:'로이 럼',mean:'mistake',cat:'직장'},
+{id:290,kr:'성공',vn:'Thành công',pron:'타잉 콩',mean:'success',cat:'직장'},
+{id:291,kr:'실패',vn:'Thất bại',pron:'탓 바이',mean:'failure',cat:'직장'},
+{id:292,kr:'결정',vn:'Quyết định',pron:'꾸이엣 딩',mean:'decision',cat:'직장'},
+{id:293,kr:'문제',vn:'Vấn đề',pron:'번 데',mean:'problem/issue',cat:'직장'},
+{id:294,kr:'해결',vn:'Giải quyết',pron:'지아이 꾸이엣',mean:'solution/resolve',cat:'직장'},
+{id:295,kr:'결과',vn:'Kết quả',pron:'껫 꽈',mean:'result',cat:'직장'},
+
+// ─── 2→3급 생활/건강 (20) ───
+{id:296,kr:'운동하다',vn:'Tập thể dục',pron:'땁 테 죽',mean:'to exercise',cat:'건강'},
+{id:297,kr:'다이어트',vn:'Ăn kiêng',pron:'안 끼엥',mean:'diet',cat:'건강'},
+{id:298,kr:'스트레스',vn:'Căng thẳng',pron:'깡 탕',mean:'stress',cat:'건강'},
+{id:299,kr:'수술',vn:'Phẫu thuật',pron:'퍼우 투앗',mean:'surgery/operation',cat:'건강'},
+{id:300,kr:'입원',vn:'Nhập viện',pron:'납 비엔',mean:'hospitalization',cat:'건강'},
+{id:301,kr:'퇴원',vn:'Xuất viện',pron:'쑤앗 비엔',mean:'discharge from hospital',cat:'건강'},
+{id:302,kr:'건강검진',vn:'Khám sức khỏe',pron:'캄 스크 쾨',mean:'health checkup',cat:'건강'},
+{id:303,kr:'감기',vn:'Cảm lạnh',pron:'깜 라잉',mean:'cold (illness)',cat:'건강'},
+{id:304,kr:'기침',vn:'Ho',pron:'호',mean:'cough',cat:'건강'},
+{id:305,kr:'콧물',vn:'Chảy nước mũi',pron:'짜이 느억 무이',mean:'runny nose',cat:'건강'},
+{id:306,kr:'소화',vn:'Tiêu hóa',pron:'띠에우 호아',mean:'digestion',cat:'건강'},
+{id:307,kr:'잠을 못 자다',vn:'Không ngủ được',pron:'콩 응우 드억',mean:'can\'t sleep',cat:'건강'},
+{id:308,kr:'피가 나다',vn:'Chảy máu',pron:'짜이 마우',mean:'bleeding',cat:'건강'},
+{id:309,kr:'붓다',vn:'Sưng',pron:'승',mean:'swollen',cat:'건강'},
+{id:310,kr:'다치다',vn:'Bị thương',pron:'비 트엉',mean:'get injured',cat:'건강'},
+{id:311,kr:'영양제',vn:'Vitamin / Thực phẩm chức năng',pron:'비타민',mean:'supplements',cat:'건강'},
+{id:312,kr:'물을 많이 마시다',vn:'Uống nhiều nước',pron:'우옹 니에우 느억',mean:'drink lots of water',cat:'건강'},
+{id:313,kr:'충분히 자다',vn:'Ngủ đủ giấc',pron:'응우 두 약',mean:'sleep enough',cat:'건강'},
+{id:314,kr:'규칙적으로',vn:'Đều đặn',pron:'데우 단',mean:'regularly',cat:'건강'},
+{id:315,kr:'병이 낫다',vn:'Khỏi bệnh',pron:'쾨 배잉',mean:'recover from illness',cat:'건강'},
+
+// ─── 2→3급 감정/관계 (20) ───
+{id:316,kr:'이해하다',vn:'Hiểu',pron:'히에우',mean:'to understand',cat:'감정'},
+{id:317,kr:'용서하다',vn:'Tha thứ',pron:'타 트',mean:'to forgive',cat:'감정'},
+{id:318,kr:'부러워요',vn:'Ghen tị / Thèm',pron:'갠 띠',mean:'envious/jealous',cat:'감정'},
+{id:319,kr:'자랑스러워요',vn:'Tự hào',pron:'뚜 하오',mean:'proud',cat:'감정'},
+{id:320,kr:'부끄러워요',vn:'Xấu hổ',pron:'서우 호',mean:'embarrassed/ashamed',cat:'감정'},
+{id:321,kr:'답답해요',vn:'Bức bối',pron:'뷱 보이',mean:'frustrated/stuffy',cat:'감정'},
+{id:322,kr:'외로워요',vn:'Cô đơn',pron:'꼬 던',mean:'lonely',cat:'감정'},
+{id:323,kr:'그립다',vn:'Nhớ',pron:'녀',mean:'miss (someone/something)',cat:'감정'},
+{id:324,kr:'신기해요',vn:'Thú vị / Kỳ lạ',pron:'투 비',mean:'fascinating/strange',cat:'감정'},
+{id:325,kr:'실망했어요',vn:'Thất vọng',pron:'탓 봉',mean:'disappointed',cat:'감정'},
+{id:326,kr:'다투다',vn:'Cãi nhau',pron:'까이 냐우',mean:'to argue/fight',cat:'관계'},
+{id:327,kr:'화해하다',vn:'Làm lành',pron:'람 라잉',mean:'to make up/reconcile',cat:'관계'},
+{id:328,kr:'사귀다',vn:'Hẹn hò / Yêu nhau',pron:'헨 호',mean:'to date',cat:'관계'},
+{id:329,kr:'헤어지다',vn:'Chia tay',pron:'찌아 따이',mean:'to break up',cat:'관계'},
+{id:330,kr:'결혼하다',vn:'Kết hôn',pron:'껫 혼',mean:'to get married',cat:'관계'},
+{id:331,kr:'이혼하다',vn:'Ly hôn',pron:'리 혼',mean:'to divorce',cat:'관계'},
+{id:332,kr:'믿다',vn:'Tin tưởng',pron:'띤 뜨엉',mean:'to trust/believe',cat:'관계'},
+{id:333,kr:'존경하다',vn:'Kính trọng',pron:'낀 쫑',mean:'to respect',cat:'관계'},
+{id:334,kr:'약속',vn:'Hẹn / Lời hứa',pron:'헨',mean:'promise/appointment',cat:'관계'},
+{id:335,kr:'비밀',vn:'Bí mật',pron:'비 맛',mean:'secret',cat:'관계'},
+
+// ─── 2→3급 자연/환경 (15) ───
+{id:336,kr:'산',vn:'Núi',pron:'누이',mean:'mountain',cat:'자연'},
+{id:337,kr:'강',vn:'Sông',pron:'송',mean:'river',cat:'자연'},
+{id:338,kr:'바다',vn:'Biển',pron:'비엔',mean:'sea/ocean',cat:'자연'},
+{id:339,kr:'하늘',vn:'Bầu trời',pron:'버우 쩌이',mean:'sky',cat:'자연'},
+{id:340,kr:'나무',vn:'Cây',pron:'꺼이',mean:'tree',cat:'자연'},
+{id:341,kr:'꽃',vn:'Hoa',pron:'호아',mean:'flower',cat:'자연'},
+{id:342,kr:'흙',vn:'Đất',pron:'닷',mean:'soil/earth',cat:'자연'},
+{id:343,kr:'별',vn:'Ngôi sao',pron:'응오이 사오',mean:'star',cat:'자연'},
+{id:344,kr:'달',vn:'Mặt trăng',pron:'맛 짱',mean:'moon',cat:'자연'},
+{id:345,kr:'해/태양',vn:'Mặt trời',pron:'맛 쩌이',mean:'sun',cat:'자연'},
+{id:346,kr:'환경',vn:'Môi trường',pron:'모이 쯔엉',mean:'environment',cat:'자연'},
+{id:347,kr:'오염',vn:'Ô nhiễm',pron:'오 니엠',mean:'pollution',cat:'자연'},
+{id:348,kr:'재활용',vn:'Tái chế',pron:'따이 쩨',mean:'recycling',cat:'자연'},
+{id:349,kr:'에너지',vn:'Năng lượng',pron:'낭 릉',mean:'energy',cat:'자연'},
+{id:350,kr:'계절',vn:'Mùa',pron:'무아',mean:'season',cat:'자연'},
 ];
 
-// ═══════════════════════════════════════════════════════
+const DP=[
+  {id:1,kr:'오늘 뭐 먹고 싶어?',vn:'Hôm nay muốn ăn gì?',cat:'일상대화'},
+  {id:2,kr:'집에 언제 와?',vn:'Mấy giờ về nhà?',cat:'일상대화'},
+  {id:3,kr:'사랑해, 오늘도 고마워',vn:'Anh yêu em, cảm ơn em hôm nay',cat:'감정표현'},
+  {id:4,kr:'조심해서 가',vn:'Đi cẩn thận nhé',cat:'일상대화'},
+  {id:5,kr:'밥 먹었어? 뭐 먹었어?',vn:'Ăn cơm chưa? Ăn gì vậy?',cat:'음식'},
+  {id:6,kr:'나 많이 사랑해?',vn:'Anh yêu em nhiều không?',cat:'감정표현'},
+  {id:7,kr:'오늘 날씨 어때?',vn:'Hôm nay thời tiết thế nào?',cat:'일상대화'},
+];
+
+// ════════════════════════════════════════════════════
 // 상태
-// ═══════════════════════════════════════════════════════
-const K_W='hanve_words2', K_C='hanve_chat2', K_N='hanve_nick';
-let words   = JSON.parse(localStorage.getItem(K_W)||'null') || DEFAULT_WORDS;
-let msgs    = JSON.parse(localStorage.getItem(K_C)||'[]');
-let nicks   = JSON.parse(localStorage.getItem(K_N)||'null') || {me:'나',other:'상대방'};
-let who     = 'me';
-let editWId = null;
-let searchTimer = null;
-
+// ════════════════════════════════════════════════════
+const KW='hv_w6',KC='hv_c5',KN='hv_n5',KS='hv_s5',KP='hv_p5';
+let words   = JSON.parse(localStorage.getItem(KW)||'null')||DW;
+let msgs    = JSON.parse(localStorage.getItem(KC)||'[]');
+let nicks   = JSON.parse(localStorage.getItem(KN)||'null')||{me:'나',other:'상대방'};
+let stats   = JSON.parse(localStorage.getItem(KS)||'{}');
+let phrases = JSON.parse(localStorage.getItem(KP)||'null')||DP;
+let who='me', editWId=null, sTimer=null;
 // 퀴즈
-let qWords=[], qIdx=0, qScore=0, qTotal=0, qMode='kr2vn', qFlipped=false;
+let qW=[],qI=0,qSc=0,qTot=0,qMode='mcq',qWIds=[];
+let qSession=0; // 세션 토큰 - 뒤로가기 시 증가해서 잔여 setTimeout 무력화
+// 스피드
+let spTimer=null,spMax=5;
+// 매칭
+let mSel=null,mPairs=[],mDone=0;
+const EMOJIS=['❤️','😂','👍','😮','😢','🔥'];
 
-function sw(){ localStorage.setItem(K_W,JSON.stringify(words)); }
-function sc(){ localStorage.setItem(K_C,JSON.stringify(msgs.slice(-300))); }
-function nid(){ return Date.now()+''+Math.random().toString(36).slice(2,5); }
+const sw=()=>localStorage.setItem(KW,JSON.stringify(words));
+const sc=()=>localStorage.setItem(KC,JSON.stringify(msgs.slice(-300)));
+const sp2=()=>localStorage.setItem(KP,JSON.stringify(phrases));
+const ss=()=>localStorage.setItem(KS,JSON.stringify(stats));
+const nid=()=>Date.now()+''+Math.floor(Math.random()*999);
 
-// ═══════════════════════════════════════════════════════
-// 탭
-// ═══════════════════════════════════════════════════════
-function showPage(id,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-item').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  el.classList.add('active');
-  if(id==='words'){buildCatFil();renderWords();}
-  if(id==='quiz') initQuiz();
-  if(id==='chat') scrollBot();
+// ════════════════════════════════════════════════════
+// TTS
+// ════════════════════════════════════════════════════
+function speak(text,lang){
+  if(!window.speechSynthesis)return;
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=lang;u.rate=0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+  return u;
 }
 
-// ═══════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════
+// 탭
+// ════════════════════════════════════════════════════
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ti').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+  if(id==='words'){buildCat();renderWords();}
+  if(id==='quiz'){qSession++;clrSpTimer();window._ls=null;window._sp=null;window._mc=null;initQuiz();}
+  if(id==='chat') scrollBot();
+  if(id==='home') renderHome();
+  if(id==='phrases') renderPhrases();
+}
+
+// ════════════════════════════════════════════════════
+// 홈
+// ════════════════════════════════════════════════════
+function renderHome(){
+  const w=words[Math.floor(Date.now()/86400000)%words.length];
+  document.getElementById('todayWord').innerHTML=`
+    <div class="tw-kr">${esc(w.kr)}</div>
+    <div class="tw-vn">${esc(w.vn)}</div>
+    <div class="tw-pron">[ ${esc(w.pron||'—')} ]</div>
+    ${w.mean?`<div class="tw-mean">${esc(w.mean)}</div>`:''}
+    <div class="tw-acts">
+      <button class="tts-btn" onclick="speak('${esq(w.kr)}','ko-KR')">🔊 한국어</button>
+      <button class="tts-btn" onclick="speak('${esq(w.vn)}','vi-VN')">🔊 베트남어</button>
+    </div>`;
+  const cats=[...new Set(words.map(x=>x.cat))];
+  document.getElementById('pgGrid').innerHTML=cats.map(cat=>{
+    const cw=words.filter(x=>x.cat===cat);
+    const ln=cw.filter(x=>stats[x.id]&&stats[x.id].correct>0).length;
+    const pct=Math.round(ln/cw.length*100);
+    return `<div class="pg-item"><div class="pg-cat">${cat}</div>
+      <div class="pg-bw"><div class="pg-bf" style="width:${pct}%"></div></div>
+      <div class="pg-n">${ln}/${cw.length}개 · ${pct}%</div></div>`;
+  }).join('');
+  const prev=phrases.slice(0,3);
+  document.getElementById('phPrev').innerHTML=prev.length
+    ?prev.map(p=>`<div class="ph-row"><div style="flex:1"><div class="ph-kr">${esc(p.kr)}</div><div class="ph-vn">${esc(p.vn)}</div></div><button class="phtts" onclick="speak('${esq(p.kr)}','ko-KR')">🔊</button></div>`).join('')
+    :'<div style="text-align:center;color:var(--text3);font-size:13px;padding:1rem">즐겨찾기 문장이 없어요</div>';
+}
+
+// ════════════════════════════════════════════════════
 // 채팅
-// ═══════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════
 function setWho(w){
   who=w;
   document.getElementById('chip-me').classList.toggle('active',w==='me');
   document.getElementById('chip-other').classList.toggle('active',w==='other');
-  // 닉네임 반영
-  document.getElementById('chip-me').textContent = nicks.me;
-  document.getElementById('chip-other').textContent = nicks.other;
+  document.getElementById('chip-me').textContent=nicks.me;
+  document.getElementById('chip-other').textContent=nicks.other;
 }
-
-function chatKey(e){
-  if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){
-    e.preventDefault(); sendMsg();
-  }
-}
-function autoH(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px'; }
-
+function chatKey(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing)e.preventDefault();}
+function chatKeyUp(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing)sendMsg();}
+function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
 function sendMsg(){
   const inp=document.getElementById('chatInput');
-  const text=inp.value.trim();
-  if(!text) return;
-  msgs.push({id:nid(),who,text,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),trans:null});
-  sc(); inp.value=''; inp.style.height='auto';
-  renderMsgs(); scrollBot();
+  const text=inp.value.trim();if(!text)return;
+  msgs.push({id:nid(),who,text,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),trans:null,reactions:{}});
+  sc();inp.value='';inp.style.height='auto';renderMsgs();scrollBot();
 }
-
 async function translateMsg(id){
-  const m=msgs.find(x=>x.id===id);
-  if(!m) return;
+  const m=msgs.find(x=>x.id===id);if(!m)return;
   if(m.trans){m.trans=null;sc();renderMsgs();return;}
-  m.trans='__loading__'; sc(); renderMsgs();
-  try {
-    const hasKorean=/[가-힣]/.test(m.text);
-    const from=hasKorean?'ko':'vi';
-    const to=hasKorean?'vi':'ko';
-    // Google Translate 비공식 API (무료, CORS 허용)
-    const url=`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(m.text)}`;
-    const res=await fetch(url);
-    const data=await res.json();
-    // 응답 구조: [[["번역결과","원문",...],...]...]
-    const translated=data[0]?.map(x=>x[0]).join('')||'';
-    m.trans=translated||'번역 결과 없음';
-  } catch(e) {
-    m.trans='번역할 수 없어요 (네트워크 확인)';
-  }
-  sc(); renderMsgs();
+  m.trans='__loading__';sc();renderMsgs();
+  try{
+    const hasKr=/[가-힣]/.test(m.text);
+    const res=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${hasKr?'ko':'vi'}&tl=${hasKr?'vi':'ko'}&dt=t&q=${encodeURIComponent(m.text)}`);
+    const d=await res.json();
+    m.trans=d[0]?.map(x=>x[0]).join('')||'번역 결과 없음';
+  }catch{m.trans='번역할 수 없어요';}
+  sc();renderMsgs();
 }
-
-function addWordFromMsg(id){
-  const m=msgs.find(x=>x.id===id);
-  if(!m) return;
+function togReact(mid,emoji){
+  const m=msgs.find(x=>x.id===mid);if(!m)return;
+  if(!m.reactions)m.reactions={};
+  m.reactions[emoji]=(m.reactions[emoji]||0)>0?0:1;
+  sc();renderMsgs();
+}
+function msgToWord(id){
+  const m=msgs.find(x=>x.id===id);if(!m)return;
   openAddWord();
-  const hasKorean=/[가-힣]/.test(m.text);
-  if(hasKorean){ document.getElementById('w-kr').value=m.text; }
-  else { document.getElementById('w-vn').value=m.text; }
+  const hasKr=/[가-힣]/.test(m.text);
+  document.getElementById(hasKr?'w-kr':'w-vn').value=m.text;
 }
-
 function renderMsgs(){
   const c=document.getElementById('chatMsgs');
-  if(!msgs.length){
-    c.innerHTML=`<div style="text-align:center;color:var(--text3);font-size:13px;padding:2rem;line-height:1.8">
-      안녕하세요! 👋<br>메시지를 보내고 번역 버튼을 눌러보세요<br><small>🔤 번역 · ＋ 단어장 저장</small></div>`;
-    return;
-  }
+  if(!msgs.length){c.innerHTML=`<div style="text-align:center;color:var(--text3);font-size:13px;padding:2rem;line-height:1.8">안녕하세요! 👋<br>메시지를 보내고 번역 버튼을 눌러보세요</div>`;return;}
   c.innerHTML=msgs.map(m=>{
     const isMe=m.who==='me';
-    const nick=isMe?nicks.me:nicks.other;
-    const transBtn=m.trans&&m.trans!=='__loading__'
-      ?`<button class="mab on" onclick="translateMsg('${m.id}')">번역 숨기기</button>`
-      :`<button class="mab" onclick="translateMsg('${m.id}')">🔤 번역</button>`;
-    const transDiv=m.trans==='__loading__'
-      ?`<div class="trans-bubble trans-loading">번역 중...</div>`
-      :m.trans?`<div class="trans-bubble">${esc(m.trans)}</div>`:'';
-    return `
-    <div class="msg-group ${isMe?'me':'other'}">
-      <div class="msg-sender">${esc(nick)}</div>
-      <div class="msg-row">
-        <div class="bubble">${esc(m.text)}</div>
-        <div class="msg-time">${m.time}</div>
+    const rH=Object.entries(m.reactions||{}).filter(([,v])=>v>0).map(([e])=>`<span class="rpill on" onclick="togReact('${m.id}','${e}')">${e}</span>`).join('');
+    const ep=EMOJIS.map(e=>`<span class="eopt" onclick="togReact('${m.id}','${e}')">${e}</span>`).join('');
+    const hasKr=/[가-힣]/.test(m.text);
+    const td=m.trans==='__loading__'?`<div class="tbub" style="color:var(--text3)">번역 중...</div>`:m.trans?`<div class="tbub">${esc(m.trans)}</div>`:'';
+    return `<div class="mg ${isMe?'me':'other'}">
+      <div class="msender">${esc(isMe?nicks.me:nicks.other)}</div>
+      <div class="mrow"><div class="bub">${esc(m.text)}</div><div class="mtime">${m.time}</div></div>
+      ${td}${rH?`<div class="reacts">${rH}</div>`:''}
+      <div class="macts">
+        <button class="mab ${m.trans&&m.trans!=='__loading__'?'on':''}" onclick="translateMsg('${m.id}')">🔤 번역</button>
+        <button class="mab" onclick="speak('${esq(m.text)}','${hasKr?'ko-KR':'vi-VN'}')">🔊</button>
+        <button class="mab" onclick="msgToWord('${m.id}')">＋ 단어장</button>
+        <div class="epicker">${ep}</div>
+      </div></div>`;
+  }).join('');
+}
+function scrollBot(){const c=document.getElementById('chatMsgs');setTimeout(()=>c.scrollTop=c.scrollHeight,50);}
+
+// ════════════════════════════════════════════════════
+// 단어장
+// ════════════════════════════════════════════════════
+function buildCat(){
+  const cats=[...new Set(words.map(w=>w.cat))];
+  const sel=document.getElementById('catF');const cur=sel.value;
+  sel.innerHTML='<option value="">전체</option>'+cats.map(c=>`<option value="${c}"${c===cur?' selected':''}>${c}</option>`).join('');
+}
+function renderWords(){
+  const q=(document.getElementById('wordSearch').value||'').toLowerCase();
+  const cat=document.getElementById('catF').value;
+  const f=words.filter(w=>(!cat||w.cat===cat)&&(!q||(w.kr+w.vn+(w.pron||'')+(w.mean||'')).toLowerCase().includes(q)));
+  document.getElementById('wstats').textContent=`전체 ${words.length}개 · 표시 ${f.length}개`;
+  const list=document.getElementById('wlist');
+  if(!f.length){list.innerHTML='<div class="empty">단어가 없어요</div>';return;}
+  list.innerHTML=f.map(w=>{
+    const st=stats[w.id]||{};
+    return `<div class="wcard">
+      <div class="wcc">
+        <div class="wkr">${esc(w.kr)}</div>
+        <div class="wvn">${esc(w.vn)}</div>
+        ${w.pron?`<div class="wpron">[ ${esc(w.pron)} ]</div>`:''}
+        ${w.mean?`<div class="wmean">${esc(w.mean)}</div>`:''}
+        <div><span class="wcat">${w.cat}</span>${st.wrong>0?`<span class="wwrong">❌${st.wrong}회</span>`:''}</div>
       </div>
-      ${transDiv}
-      <div class="msg-actions">
-        ${transBtn}
-        <button class="mab" onclick="addWordFromMsg('${m.id}')">＋ 단어장</button>
+      <div class="wbw">
+        <button class="wb" onclick="speak('${esq(w.kr)}','ko-KR')">🇰🇷</button>
+        <button class="wb" onclick="speak('${esq(w.vn)}','vi-VN')">🇻🇳</button>
+        <button class="wb" onclick="editWord(${w.id})">✏️</button>
+        <button class="wb" onclick="delWord(${w.id})" style="color:var(--red)">✕</button>
       </div>
     </div>`;
   }).join('');
 }
-
-function scrollBot(){ const c=document.getElementById('chatMsgs'); setTimeout(()=>c.scrollTop=c.scrollHeight,50); }
-
-// ═══════════════════════════════════════════════════════
-// 단어장
-// ═══════════════════════════════════════════════════════
-function buildCatFil(){
-  const cats=[...new Set(words.map(w=>w.cat))];
-  const sel=document.getElementById('catFilter');
-  const cur=sel.value;
-  sel.innerHTML='<option value="">전체</option>'+cats.map(c=>`<option value="${c}"${c===cur?' selected':''}>${c}</option>`).join('');
-}
-
-function renderWords(){
-  const q=(document.getElementById('wordSearch').value||'').toLowerCase();
-  const cat=document.getElementById('catFilter').value;
-  const f=words.filter(w=>(!cat||w.cat===cat)&&(!q||(w.kr+w.vn+(w.pron||'')).toLowerCase().includes(q)));
-  document.getElementById('wordStats').textContent=`전체 ${words.length}개 · 표시 ${f.length}개`;
-  const list=document.getElementById('wordList');
-  if(!f.length){list.innerHTML='<div class="word-empty">단어가 없어요. + 버튼으로 추가해보세요!</div>';return;}
-  list.innerHTML=f.map(w=>`
-    <div class="word-card">
-      <div class="word-content">
-        <div class="word-kr">${esc(w.kr)}</div>
-        <div class="word-vn">${esc(w.vn)}</div>
-        ${w.pron?`<div class="word-pron">[ ${esc(w.pron)} ]</div>`:''}
-        <span class="word-cat">${w.cat}</span>
-      </div>
-      <div class="word-right">
-        <button class="word-del-btn" onclick="editWord(${w.id})" style="color:var(--text2);font-size:13px">✏️</button>
-        <button class="word-del-btn" onclick="delWord(${w.id})">✕</button>
-      </div>
-    </div>`).join('');
-}
-
-// 검색창 입력 → 단어장 필터 + API 번역 검색
-function onSearchInput(){
+function onSI(){
   const q=document.getElementById('wordSearch').value.trim();
-  document.getElementById('searchClear').style.display=q?'block':'none';
-  renderWords();
-  clearTimeout(searchTimer);
-  const dd=document.getElementById('searchDd');
+  document.getElementById('wsclr').style.display=q?'block':'none';
+  renderWords();clearTimeout(sTimer);
+  const dd=document.getElementById('sdd');
   if(!q||q.length<2){dd.classList.remove('open');return;}
-  dd.innerHTML='<div class="dd-searching">번역 검색 중...</div>';
+  dd.innerHTML='<div style="padding:12px;text-align:center;color:var(--text3);font-size:13px">번역 검색 중...</div>';
   dd.classList.add('open');
-  searchTimer=setTimeout(()=>doApiSearch(q),600);
+  sTimer=setTimeout(()=>doSearch(q),600);
 }
-
-async function doApiSearch(q){
-  const dd=document.getElementById('searchDd');
+async function doSearch(q){
+  const dd=document.getElementById('sdd');
   try{
-    const hasKorean=/[가-힣]/.test(q);
-    const from=hasKorean?'ko':'vi';
-    const to=hasKorean?'vi':'ko';
-    const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(q)}&langpair=${from}|${to}`;
-    const res=await fetch(url);
-    const data=await res.json();
-    const trans=data.responseData?.translatedText||'';
+    const hasKr=/[가-힣]/.test(q);
+    const res=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${hasKr?'ko':'vi'}&tl=${hasKr?'vi':'ko'}&dt=t&q=${encodeURIComponent(q)}`);
+    const d=await res.json();const trans=d[0]?.map(x=>x[0]).join('')||'';
     if(!trans){dd.classList.remove('open');return;}
-    const kr=hasKorean?q:trans;
-    const vn=hasKorean?trans:q;
-    const alreadyHave=words.find(w=>w.kr===kr||w.vn===vn);
-    dd.innerHTML=`
-      <div class="dd-item">
-        <div>
-          <div class="dd-kr">🇰🇷 ${esc(kr)}</div>
-          <div class="dd-vn">🇻🇳 ${esc(vn)}</div>
-        </div>
-        ${alreadyHave
-          ?'<span style="font-size:11px;color:var(--text3)">이미 있음</span>'
-          :`<button class="dd-add" onclick="addFromSearch('${esc(kr)}','${esc(vn)}')">+ 추가</button>`}
-      </div>`;
-    dd.classList.add('open');
-  }catch{
-    dd.innerHTML='<div class="dd-searching">번역 서버에 연결할 수 없어요</div>';
-  }
+    const kr=hasKr?q:trans,vn=hasKr?trans:q;
+    const have=words.find(w=>w.kr===kr||w.vn===vn);
+    dd.innerHTML=`<div class="sdd-item"><div><div class="sdkr">🇰🇷 ${esc(kr)}</div><div class="sdvn">🇻🇳 ${esc(vn)}</div></div>
+      ${have?'<span style="font-size:11px;color:var(--text3)">이미 있음</span>'
+        :`<button class="sdadd" onclick="addFromSearch('${esq(kr)}','${esq(vn)}')">+ 추가</button>`}
+    </div>`;dd.classList.add('open');
+  }catch{dd.innerHTML='<div style="padding:12px;text-align:center;color:var(--text3);font-size:13px">번역 서버 오류</div>';}
 }
-
 function addFromSearch(kr,vn){
-  words.push({id:Date.now(),kr,vn,pron:'',cat:'기타'});
-  sw(); buildCatFil(); renderWords();
-  document.getElementById('searchDd').classList.remove('open');
+  words.push({id:Date.now(),kr,vn,pron:'',mean:'',cat:'기타'});
+  sw();buildCat();renderWords();
+  document.getElementById('sdd').classList.remove('open');
   document.getElementById('wordSearch').value='';
-  document.getElementById('searchClear').style.display='none';
+  document.getElementById('wsclr').style.display='none';
 }
-
-function clearSearch(){
+function clrSearch(){
   document.getElementById('wordSearch').value='';
-  document.getElementById('searchClear').style.display='none';
-  document.getElementById('searchDd').classList.remove('open');
+  document.getElementById('wsclr').style.display='none';
+  document.getElementById('sdd').classList.remove('open');
   renderWords();
 }
-
 function editWord(id){
-  editWId=id;
-  const w=words.find(x=>x.id===id);
-  document.getElementById('wordSheetTitle').textContent='단어 수정';
-  document.getElementById('wordSaveBtn').textContent='수정';
+  editWId=id;const w=words.find(x=>x.id===id);
+  document.getElementById('wshT').textContent='단어 수정';
+  document.getElementById('wshBtn').textContent='수정';
   document.getElementById('w-kr').value=w.kr;
   document.getElementById('w-vn').value=w.vn;
   document.getElementById('w-pron').value=w.pron||'';
+  document.getElementById('w-mean').value=w.mean||'';
   document.getElementById('w-cat').value=w.cat;
-  document.getElementById('wordOverlay').classList.add('open');
+  document.getElementById('ov-word').classList.add('open');
 }
-
 function delWord(id){
-  if(!confirm('이 단어를 삭제할까요?')) return;
-  words=words.filter(w=>w.id!==id);
-  sw(); buildCatFil(); renderWords();
+  if(!confirm('이 단어를 삭제할까요?'))return;
+  words=words.filter(w=>w.id!==id);sw();buildCat();renderWords();
 }
-
-// ═══════════════════════════════════════════════════════
-// 단어 추가 모달
-// ═══════════════════════════════════════════════════════
 function openAddWord(){
   editWId=null;
-  document.getElementById('wordSheetTitle').textContent='단어 추가';
-  document.getElementById('wordSaveBtn').textContent='저장';
-  ['w-kr','w-vn','w-pron'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('wshT').textContent='단어 추가';
+  document.getElementById('wshBtn').textContent='저장';
+  ['w-kr','w-vn','w-pron','w-mean'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('w-cat').value='일상';
-  document.getElementById('wordOverlay').classList.add('open');
+  document.getElementById('ov-word').classList.add('open');
   setTimeout(()=>document.getElementById('w-kr').focus(),150);
 }
-
 function saveWord(){
   const kr=document.getElementById('w-kr').value.trim();
   const vn=document.getElementById('w-vn').value.trim();
   const pron=document.getElementById('w-pron').value.trim();
+  const mean=document.getElementById('w-mean').value.trim();
   const cat=document.getElementById('w-cat').value;
   if(!kr||!vn){alert('한국어와 베트남어는 필수예요');return;}
-  if(editWId){
-    const idx=words.findIndex(w=>w.id===editWId);
-    if(idx>=0)words[idx]={...words[idx],kr,vn,pron,cat};
-  } else {
-    words.push({id:Date.now(),kr,vn,pron,cat});
-  }
-  sw(); buildCatFil(); renderWords();
-  closeSheet('wordOverlay');
+  if(editWId){const i=words.findIndex(w=>w.id===editWId);if(i>=0)words[i]={...words[i],kr,vn,pron,mean,cat};}
+  else words.push({id:Date.now(),kr,vn,pron,mean,cat});
+  sw();buildCat();renderWords();closeOv('ov-word');
 }
 
-// ═══════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════
+// 퀴즈 메인
+// ════════════════════════════════════════════════════
+function initQuiz(){
+  // 세션 증가 → 이전에 예약된 모든 setTimeout 무력화
+  qSession++;
+  clrSpTimer();
+  window._sp=null; window._ls=null; window._mc=null;
+  if(!words.length){document.getElementById('qwrap').innerHTML='<div class="empty">단어장에 단어가 없어요</div>';return;}
+  qW=[...words].sort(()=>Math.random()-.5);
+  qI=0;qSc=0;qTot=0;qWIds=[];
+  const wrongW=words.filter(w=>stats[w.id]&&stats[w.id].wrong>0);
+  const wb=wrongW.length?`<div style="width:100%;max-width:420px;background:var(--red-bg);border-radius:var(--rl);padding:12px 14px">
+    <div style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:8px">❌ 틀린 단어 ${wrongW.length}개 있어요</div>
+    <button onclick="startWrong()" style="width:100%;padding:9px;border-radius:var(--r);background:var(--red);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer">틀린 단어 먼저 복습</button>
+  </div>`:'';
+  document.getElementById('qwrap').innerHTML=`
+    ${wb}
+    <div style="width:100%;max-width:420px;text-align:center;${wrongW.length?'margin-top:6px':''}">
+      <div style="font-size:20px;font-weight:700;margin-bottom:4px">🎯 퀴즈 모드 선택</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:12px">총 ${qW.length}개 단어</div>
+    </div>
+    <div class="qmgrid">
+      <div class="qmc ${qMode==='mcq'?'active':''}" onclick="setQM('mcq',this)">
+        <div class="qmci">🔢</div><div class="qmcn">4지선다</div>
+        <div class="qmcd">보기 4개 중<br>정답을 골라요</div>
+      </div>
+      <div class="qmc ${qMode==='speed'?'active':''}" onclick="setQM('speed',this)">
+        <div class="qmci">⚡</div><div class="qmcn">스피드 퀴즈</div>
+        <div class="qmcd">5초 안에 선택!<br>빠르게 도전</div>
+      </div>
+      <div class="qmc ${qMode==='match'?'active':''}" onclick="setQM('match',this)">
+        <div class="qmci">🧩</div><div class="qmcn">매칭 게임</div>
+        <div class="qmcd">한국어↔베트남어<br>짝을 맞춰요</div>
+      </div>
+      <div class="qmc ${qMode==='listen'?'active':''}" onclick="setQM('listen',this)">
+        <div class="qmci">🎧</div><div class="qmcn">듣고 맞추기</div>
+        <div class="qmcd">발음 듣고<br>뭔지 골라요</div>
+      </div>
+      <div class="qmc ${qMode==='fill'?'active':''}" onclick="setQM('fill',this)" style="grid-column:1/-1">
+        <div class="qmci">✏️</div><div class="qmcn">빈칸 채우기</div>
+        <div class="qmcd">베트남어 중간 글자를 숨겼어요 — 힌트 보고 맞춰보세요!</div>
+      </div>
+    </div>
+    <button class="qstbtn" onclick="startQuiz()">시작하기 →</button>`;
+}
+function setQM(m,el){
+  qMode=m;
+  document.querySelectorAll('.qmc').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+function startWrong(){
+  qSession++;clrSpTimer();window._sp=null;window._ls=null;window._mc=null;
+  qW=words.filter(w=>stats[w.id]&&stats[w.id].wrong>0).sort(()=>Math.random()-.5);
+  qI=0;qSc=0;qTot=0;qWIds=[];dispatchMode();
+}
+function startQuiz(){
+  qSession++;clrSpTimer();window._sp=null;window._ls=null;window._mc=null;
+  qI=0;qSc=0;qTot=0;qWIds=[];
+  qW=[...words].sort(()=>Math.random()-.5);
+  dispatchMode();
+}
+function dispatchMode(){
+  if(qMode==='mcq') renderMCQ();
+  else if(qMode==='speed') renderSpeed();
+  else if(qMode==='match') startMatch();
+  else if(qMode==='listen') renderListen();
+  else if(qMode==='fill') renderFill();
+}
+
+// 공통 헤더
+function qHead(i,tot,sc,ttot){
+  const pct=Math.round(i/tot*100);
+  return `<div class="qtop" style="width:100%;max-width:420px">
+    <span style="font-size:13px;color:var(--text2)">${i} / ${tot}</span>
+    <span style="font-size:13px;font-weight:600;color:var(--primary)">✅${sc} ❌${ttot-sc}</span>
+  </div>
+  <div class="qpb"><div class="qpbf" style="width:${pct}%"></div></div>`;
+}
+
+// ─── 4지선다 ───
+function renderMCQ(){
+  if(qI>=qW.length){showResult();return;}
+  const w=qW[qI];
+  const pool=words.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3);
+  const choices=[{w,ok:true},...pool.map(x=>({w:x,ok:false}))].sort(()=>Math.random()-.5);
+  window._mc={choices,w,done:false};
+  document.getElementById('qwrap').innerHTML=`
+    ${qHead(qI,qW.length,qSc,qTot)}
+    <button onclick="initQuiz()" style="align-self:flex-start;font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;margin-bottom:2px">← 뒤로</button>
+    <div class="mcqq">
+      <div class="mcqqw">${esc(w.kr)}</div>
+      ${w.pron?`<div class="mcqqp">[ ${esc(w.pron)} ]</div>`:''}
+      <div style="margin-top:10px"><button class="tts-btn" style="margin:0 auto" onclick="speak('${esq(w.kr)}','ko-KR')">🔊 한국어 발음</button></div>
+    </div>
+    <div class="mcqcs">
+      ${choices.map((c,i)=>`<button class="mcqb" id="mc${i}" onclick="ansMCQ(${i},${c.ok})">${esc(c.w.vn)}</button>`).join('')}
+    </div>`;
+}
+function ansMCQ(idx,ok){
+  if(!window._mc||window._mc.done)return;
+  window._mc.done=true;const w=window._mc.w;
+  window._mc.choices.forEach((c,i)=>{
+    const b=document.getElementById('mc'+i);if(!b)return;
+    if(c.ok)b.classList.add('cor');
+    else if(i===idx&&!ok)b.classList.add('wro');
+  });
+  if(!stats[w.id])stats[w.id]={correct:0,wrong:0};
+  if(ok){stats[w.id].correct++;qSc++;}else{stats[w.id].wrong++;qWIds.push(w.id);}
+  qTot++;ss();
+  const s=qSession;
+  setTimeout(()=>{if(qSession!==s)return;qI++;renderMCQ();},900);
+}
+
+// ─── 스피드 ───
+function renderSpeed(){
+  clrSpTimer();
+  if(qI>=qW.length){showResult();return;}
+  const w=qW[qI];
+  const pool=words.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3);
+  const choices=[{w,ok:true},...pool.map(x=>({w:x,ok:false}))].sort(()=>Math.random()-.5);
+  window._sp={choices,w,done:false};
+  // 정수 카운터 사용 (부동소수점 오차 방지)
+  let ticksLeft = spMax * 10; // 50 = 5초 × 10ticks
+  document.getElementById('qwrap').innerHTML=`
+    ${qHead(qI,qW.length,qSc,qTot)}
+    <button onclick="initQuiz()" style="align-self:flex-start;font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;margin-bottom:2px">← 뒤로</button>
+    <div class="sptw">
+      <div class="sptb"><div class="sptbf" id="stf" style="width:100%"></div></div>
+      <div class="sptxt" id="stt">${spMax}</div>
+    </div>
+    <div class="spq">
+      <div style="font-size:26px;font-weight:700">${esc(w.kr)}</div>
+      ${w.pron?`<div style="font-size:12px;color:var(--blue);font-family:monospace;margin-top:4px">[ ${esc(w.pron)} ]</div>`:''}
+    </div>
+    <div class="spcs">
+      ${choices.map((c,i)=>`<button class="spb" id="sp${i}" onclick="ansSpeed(${i})">${esc(c.w.vn)}</button>`).join('')}
+    </div>`;
+  const mySession=qSession;
+  spTimer=setInterval(()=>{
+    // 세션 바뀌면 즉시 중단
+    if(qSession!==mySession){clrSpTimer();return;}
+    if(window._sp&&window._sp.done){clrSpTimer();return;}
+    ticksLeft--;
+    const pct=Math.max(0,ticksLeft/(spMax*10)*100);
+    const sec=Math.ceil(ticksLeft/10);
+    const f=document.getElementById('stf'),t=document.getElementById('stt');
+    if(f){f.style.width=pct+'%';f.style.background=sec<=1?'var(--red)':sec<=3?'var(--amber)':'var(--primary)';}
+    if(t)t.textContent=sec;
+    if(ticksLeft<=0){
+      clrSpTimer();
+      if(window._sp&&!window._sp.done){
+        window._sp.done=true;
+        const wd=window._sp.w;
+        window._sp.choices.forEach((c,i)=>{const b=document.getElementById('sp'+i);if(b&&c.ok)b.classList.add('hit');});
+        if(!stats[wd.id])stats[wd.id]={correct:0,wrong:0};
+        stats[wd.id].wrong++;qWIds.push(wd.id);qTot++;ss();
+        setTimeout(()=>{if(qSession!==mySession)return;qI++;renderSpeed();},900);
+      }
+    }
+  },100);
+}
+function ansSpeed(idx){
+  if(!window._sp||window._sp.done)return;
+  clrSpTimer();
+  window._sp.done=true;
+  const ok=window._sp.choices[idx].ok;
+  const w=window._sp.w;
+  window._sp.choices.forEach((c,i)=>{
+    const b=document.getElementById('sp'+i);if(!b)return;
+    if(c.ok)b.classList.add('hit');
+    else if(i===idx&&!ok)b.classList.add('mis');
+  });
+  if(!stats[w.id])stats[w.id]={correct:0,wrong:0};
+  if(ok){stats[w.id].correct++;qSc++;}else{stats[w.id].wrong++;qWIds.push(w.id);}
+  qTot++;ss();
+  const s=qSession;
+  setTimeout(()=>{if(qSession!==s)return;qI++;renderSpeed();},700);
+}
+function clrSpTimer(){if(spTimer){clearInterval(spTimer);spTimer=null;}}
+
+// ─── 매칭 게임 ───
+function startMatch(){
+  const pool=qW.slice(0,6);mPairs=pool.map(w=>({id:w.id,kr:w.kr,vn:w.vn,pron:w.pron}));mSel=null;mDone=0;
+  renderMatch();
+}
+function renderMatch(){
+  const right=[...mPairs].sort(()=>Math.random()-.5);
+  window._mL=mPairs.map((p,i)=>({key:`L${i}`,text:p.kr,pid:p.id}));
+  window._mR=right.map((p,i)=>({key:`R${i}`,text:p.vn,pid:p.id}));
+  document.getElementById('qwrap').innerHTML=`
+    <div style="width:100%;max-width:420px;text-align:center;margin-bottom:4px">
+      <div style="font-size:18px;font-weight:700">🧩 매칭 게임</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:3px">짝지어 보세요!</div>
+    </div>
+    <button onclick="initQuiz()" style="align-self:flex-start;font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;margin-bottom:4px">← 뒤로</button>
+    <div class="mgame">
+      <div>
+        <div class="mgcol-t">🇰🇷 한국어</div>
+        ${window._mL.map((it,i)=>`<div class="mgi" id="m-${it.key}" onclick="matchTap('${it.key}',${i},'L')">${esc(it.text)}</div>`).join('')}
+      </div>
+      <div>
+        <div class="mgcol-t">🇻🇳 베트남어</div>
+        ${window._mR.map((it,i)=>`<div class="mgi" id="m-${it.key}" onclick="matchTap('${it.key}',${i},'R')">${esc(it.text)}</div>`).join('')}
+      </div>
+    </div>`;
+}
+function matchTap(key,idx,side){
+  const el=document.getElementById('m-'+key);
+  if(el.classList.contains('done'))return;
+  const items=side==='L'?window._mL:window._mR;
+  const item=items[idx];
+  if(!mSel){
+    document.querySelectorAll('.mgi').forEach(e=>e.classList.remove('sel'));
+    el.classList.add('sel');mSel={key,idx,side,pid:item.pid,el};
+  } else {
+    if(mSel.side===side){
+      document.querySelectorAll('.mgi').forEach(e=>e.classList.remove('sel'));
+      el.classList.add('sel');mSel={key,idx,side,pid:item.pid,el};return;
+    }
+    if(mSel.pid===item.pid){
+      mSel.el.classList.remove('sel');mSel.el.classList.add('done');el.classList.add('done');
+      const pair=mPairs.find(p=>p.id===item.pid);
+      if(pair?.pron)mSel.el.innerHTML+=`<div style="font-size:9px;color:var(--green);margin-top:2px">[${esc(pair.pron)}]</div>`;
+      if(!stats[item.pid])stats[item.pid]={correct:0,wrong:0};stats[item.pid].correct++;ss();
+      mSel=null;mDone++;
+      if(mDone>=mPairs.length)setTimeout(showMatchDone,500);
+    } else {
+      mSel.el.classList.remove('sel');mSel.el.classList.add('bad');el.classList.add('bad');
+      const a=mSel.el,b=el;
+      setTimeout(()=>{a.classList.remove('bad');b.classList.remove('bad');},500);
+      [mSel.pid,item.pid].forEach(pid=>{if(!stats[pid])stats[pid]={correct:0,wrong:0};stats[pid].wrong++;});ss();
+      mSel=null;
+    }
+  }
+}
+function showMatchDone(){
+  document.getElementById('qwrap').innerHTML=`
+    <div class="qres">
+      <div style="font-size:48px">🧩</div>
+      <div style="font-size:22px;font-weight:700;color:var(--green)">완성!</div>
+      <div style="font-size:14px;color:var(--text2)">${mPairs.length}쌍 모두 맞췄어요!</div>
+      <div class="res-btns">
+        <button class="res-btn" style="background:var(--bg2);color:var(--text);border:0.5px solid var(--border2)" onclick="startMatch()">다시 하기</button>
+        <button class="res-btn" style="background:var(--primary);color:#fff" onclick="initQuiz()">모드 선택</button>
+      </div>
+    </div>`;
+}
+
+// ─── 듣고 맞추기 ───
+function renderListen(){
+  if(qI>=qW.length){showResult();return;}
+  const w=qW[qI];
+  const pool=words.filter(x=>x.id!==w.id).sort(()=>Math.random()-.5).slice(0,3);
+  const choices=[{w,ok:true},...pool.map(x=>({w:x,ok:false}))].sort(()=>Math.random()-.5);
+  window._ls={choices,w,done:false,played:false};
+  document.getElementById('qwrap').innerHTML=`
+    ${qHead(qI,qW.length,qSc,qTot)}
+    <button onclick="initQuiz()" style="align-self:flex-start;font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;margin-bottom:2px">← 뒤로</button>
+    <div class="listenq">
+      <div style="font-size:12px;color:var(--text3)">베트남어 발음을 듣고 한국어를 골라요</div>
+      <button class="listen-btn" id="listenBtn" onclick="playListen()">🔊</button>
+      <div class="listen-hint" id="listenHint">🔊 버튼을 눌러 발음을 들어보세요</div>
+    </div>
+    <div class="listen-choices">
+      ${choices.map((c,i)=>`<button class="lcb" id="lc${i}" onclick="ansListen(${i})">${esc(c.w.kr)}</button>`).join('')}
+    </div>`;
+  // 자동 재생 (약간 딜레이)
+  setTimeout(()=>{if(window._ls&&!window._ls.done)playListen();},500);
+}
+function playListen(){
+  if(!window._ls)return;
+  const w=window._ls.w;
+  const btn=document.getElementById('listenBtn');
+  if(btn)btn.classList.add('playing');
+  try{
+    speak(w.vn,'vi-VN');
+    const hint=document.getElementById('listenHint');
+    if(hint)hint.textContent='한국어 뜻을 골라보세요 👇';
+    window._ls.played=true;
+  }catch(e){
+    console.warn('TTS 오류:',e);
+    const hint=document.getElementById('listenHint');
+    if(hint)hint.textContent='(발음 재생 불가) 한국어 뜻을 골라보세요';
+    window._ls.played=true;
+  }
+  setTimeout(()=>{if(btn)btn.classList.remove('playing');},1500);
+}
+function ansListen(idx){
+  if(!window._ls||window._ls.done)return;
+  // 한 번도 안 들었으면 먼저 재생
+  if(!window._ls.played){playListen();return;}
+  window._ls.done=true;
+  const ok=window._ls.choices[idx].ok;
+  const w=window._ls.w;
+  window._ls.choices.forEach((c,i)=>{
+    const b=document.getElementById('lc'+i);if(!b)return;
+    if(c.ok)b.classList.add('cor');
+    else if(i===idx&&!ok)b.classList.add('wro');
+  });
+  if(ok){try{speak(w.vn,'vi-VN');}catch(e){}}
+  if(!stats[w.id])stats[w.id]={correct:0,wrong:0};
+  if(ok){stats[w.id].correct++;qSc++;}else{stats[w.id].wrong++;qWIds.push(w.id);}
+  qTot++;ss();
+  const s=qSession;
+  setTimeout(()=>{if(qSession!==s)return;qI++;renderListen();},1100);
+}
+
+// ─── 빈칸 채우기 ───
+function renderFill(){
+  if(qI>=qW.length){showResult();return;}
+  const w=qW[qI];
+  // 베트남어에서 글자를 일부 숨기고 보기 만들기
+  const masked=makeMasked(w.vn);
+  // 보기: 숨긴 부분 + 오답 3개
+  const correct=masked.hiddenChars;
+  const pool=genWrongChars(correct,3);
+  const choices=[correct,...pool].sort(()=>Math.random()-.5);
+  window._fi={w,correct,done:false,masked};
+  document.getElementById('qwrap').innerHTML=`
+    ${qHead(qI,qW.length,qSc,qTot)}
+    <button onclick="initQuiz()" style="align-self:flex-start;font-size:12px;padding:4px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;margin-bottom:2px">← 뒤로</button>
+    <div class="fillq">
+      <div class="fill-kr">${esc(w.kr)}</div>
+      ${w.pron?`<div style="font-size:12px;color:var(--blue);font-family:monospace;margin-bottom:6px">[ ${esc(w.pron)} ]</div>`:''}
+      <div class="fill-vn">${esc(masked.display)}</div>
+      <div class="fill-hint">빈 칸(___) 에 들어갈 글자를 골라요</div>
+      <button class="tts-btn" style="margin:0 auto 4px" onclick="speak('${esq(w.vn)}','vi-VN')">🔊 힌트 듣기</button>
+    </div>
+    <div class="fill-choices">
+      ${choices.map((c,i)=>`<button class="fcb" id="fc${i}" onclick="ansFill(${i},'${esq(c)}')">${esc(c)}</button>`).join('')}
+    </div>`;
+}
+function makeMasked(vn){
+  const words2=vn.split(' ');
+  if(words2.length<=1){
+    // 단어 하나면 뒤 절반 숨기기
+    const half=Math.ceil(vn.length/2);
+    return{display:vn.substring(0,half)+'___',hiddenChars:vn.substring(half)};
+  }
+  // 마지막 단어 숨기기
+  const last=words2[words2.length-1];
+  const rest=words2.slice(0,-1).join(' ');
+  return{display:rest+' ___',hiddenChars:last};
+}
+function genWrongChars(correct,n){
+  // 베트남어 단어 풀에서 비슷한 길이 오답 뽑기
+  const pool=words.filter(w=>w.id!==window._fi?.w.id)
+    .map(w=>{const m=makeMasked(w.vn);return m.hiddenChars;})
+    .filter(c=>c!==correct&&c.length>0);
+  const uniq=[...new Set(pool)];
+  return uniq.sort(()=>Math.random()-.5).slice(0,n);
+}
+function ansFill(idx,choice){
+  if(window._fi.done)return;window._fi.done=true;
+  const w=window._fi.w;const correct=window._fi.correct;
+  const ok=choice===correct;
+  for(let i=0;i<4;i++){
+    const b=document.getElementById('fc'+i);if(!b)continue;
+    if(b.textContent===correct)b.classList.add('cor');
+    else if(i===idx&&!ok)b.classList.add('wro');
+  }
+  if(!stats[w.id])stats[w.id]={correct:0,wrong:0};
+  if(ok){stats[w.id].correct++;qSc++;}else{stats[w.id].wrong++;qWIds.push(w.id);}
+  qTot++;ss();
+  const s=qSession;
+  setTimeout(()=>{if(qSession!==s)return;qI++;renderFill();},1000);
+}
+
+// ─── 결과 ───
+function showResult(){
+  const pct=qTot?Math.round(qSc/qTot*100):0;
+  const emoji=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':pct>=30?'💪':'📚';
+  const msg=pct>=90?'완벽해요!':pct>=70?'잘했어요!':pct>=50?'좋아요!':pct>=30?'더 연습해봐요!':'단어장을 복습해봐요!';
+  const wl=words.filter(w=>qWIds.includes(w.id));
+  const ws=wl.length?`<div class="wrl"><div class="wrl-t">❌ 틀린 단어 (${wl.length}개)</div>
+    ${wl.map(w=>`<div class="wrl-i"><strong>${esc(w.kr)}</strong> → ${esc(w.vn)} ${w.pron?`<span style="color:var(--red)">[${esc(w.pron)}]</span>`:''}</div>`).join('')}
+  </div>`:'';
+  document.getElementById('qwrap').innerHTML=`
+    <div class="qres">
+      <div style="font-size:48px">${emoji}</div>
+      <div style="font-size:32px;font-weight:700;color:var(--primary)">${qSc} / ${qTot}</div>
+      <div style="font-size:28px;font-weight:700;color:var(--primary)">${pct}점</div>
+      <div style="font-size:14px;color:var(--text2)">${msg}</div>
+      <div class="res-btns">
+        <button class="res-btn" style="background:var(--bg2);color:var(--text);border:0.5px solid var(--border2)" onclick="startQuiz()">다시 하기</button>
+        <button class="res-btn" style="background:var(--primary);color:#fff" onclick="initQuiz()">모드 선택</button>
+      </div>
+    </div>${ws}`;
+}
+
+// ════════════════════════════════════════════════════
+// 즐겨찾기
+// ════════════════════════════════════════════════════
+function renderPhrases(){
+  const q=(document.getElementById('phSrch')?.value||'').toLowerCase();
+  const f=phrases.filter(p=>!q||(p.kr+p.vn).toLowerCase().includes(q));
+  const list=document.getElementById('phList');
+  if(!f.length){list.innerHTML='<div class="empty">문장이 없어요</div>';return;}
+  list.innerHTML=f.map(p=>`
+    <div class="phcard">
+      <div class="phkr">${esc(p.kr)}</div>
+      <div class="phvn">${esc(p.vn)}</div>
+      <div class="phacts">
+        <span class="phcat">${p.cat}</span>
+        <button class="wb" onclick="speak('${esq(p.kr)}','ko-KR')">🇰🇷</button>
+        <button class="wb" onclick="speak('${esq(p.vn)}','vi-VN')">🇻🇳</button>
+        <button class="phdel" onclick="delPhrase(${p.id})">✕</button>
+      </div>
+    </div>`).join('');
+}
+function openAddPhrase(){
+  ['p-kr','p-vn'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('p-cat').value='일상대화';
+  document.getElementById('ov-phrase').classList.add('open');
+  setTimeout(()=>document.getElementById('p-kr').focus(),150);
+}
+function savePhrase(){
+  const kr=document.getElementById('p-kr').value.trim();
+  const vn=document.getElementById('p-vn').value.trim();
+  const cat=document.getElementById('p-cat').value;
+  if(!kr||!vn){alert('한국어와 베트남어는 필수예요');return;}
+  phrases.push({id:Date.now(),kr,vn,cat});
+  sp2();renderPhrases();closeOv('ov-phrase');
+}
+function delPhrase(id){
+  if(!confirm('이 문장을 삭제할까요?'))return;
+  phrases=phrases.filter(p=>p.id!==id);sp2();renderPhrases();
+}
+
+// ════════════════════════════════════════════════════
 // 닉네임
-// ═══════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════
 function openNick(){
   document.getElementById('nick-me').value=nicks.me;
   document.getElementById('nick-other').value=nicks.other;
-  document.getElementById('nickOverlay').classList.add('open');
+  document.getElementById('ov-nick').classList.add('open');
 }
-
 function saveNick(){
   nicks.me=document.getElementById('nick-me').value.trim()||'나';
   nicks.other=document.getElementById('nick-other').value.trim()||'상대방';
-  localStorage.setItem(K_N,JSON.stringify(nicks));
-  // 칩 업데이트
+  localStorage.setItem(KN,JSON.stringify(nicks));
   document.getElementById('chip-me').textContent=nicks.me;
   document.getElementById('chip-other').textContent=nicks.other;
-  renderMsgs();
-  closeSheet('nickOverlay');
+  renderMsgs();closeOv('ov-nick');
 }
 
-// ═══════════════════════════════════════════════════════
-// 퀴즈
-// ═══════════════════════════════════════════════════════
-function initQuiz(){
-  if(!words.length){
-    document.getElementById('quizWrap').innerHTML=`<div class="quiz-empty"><div style="font-size:3rem">📖</div><div>단어장에 단어가 없어요</div></div>`;
-    return;
-  }
-  qWords=[...words].sort(()=>Math.random()-.5);
-  qIdx=0;qScore=0;qTotal=0;qFlipped=false;
-  renderQuizSetup();
-}
-
-function renderQuizSetup(){
-  document.getElementById('quizWrap').innerHTML=`
-    <div style="width:100%;max-width:400px;text-align:center;margin-bottom:.5rem">
-      <div style="font-size:22px;font-weight:700;margin-bottom:6px">🎯 퀴즈</div>
-      <div style="font-size:13px;color:var(--text2)">총 ${qWords.length}개 단어</div>
-    </div>
-    <div style="width:100%;max-width:400px;font-size:12px;font-weight:600;color:var(--text3);margin-bottom:6px">모드 선택</div>
-    <div class="quiz-modes">
-      <button class="qmode-btn ${qMode==='kr2vn'?'active':''}" onclick="setQMode('kr2vn',this)">🇰🇷 → 🇻🇳<br>한→베 맞추기</button>
-      <button class="qmode-btn ${qMode==='vn2kr'?'active':''}" onclick="setQMode('vn2kr',this)">🇻🇳 → 🇰🇷<br>베→한 맞추기</button>
-      <button class="qmode-btn ${qMode==='random'?'active':''}" onclick="setQMode('random',this)">🔀 랜덤 섞기<br>무작위 방향</button>
-      <button class="qmode-btn ${qMode==='cat'?'active':''}" onclick="setQMode('cat',this)">📂 카테고리별<br>같은 분류끼리</button>
-    </div>
-    <button class="quiz-start-btn" onclick="startQuiz()">시작하기 →</button>`;
-}
-
-function setQMode(m,el){
-  qMode=m;
-  document.querySelectorAll('.qmode-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function startQuiz(){
-  if(qMode==='cat'){
-    // 카테고리 선택
-    const cats=[...new Set(words.map(w=>w.cat))];
-    document.getElementById('quizWrap').innerHTML=`
-      <div style="width:100%;max-width:400px;font-size:15px;font-weight:700;margin-bottom:1rem;text-align:center">카테고리 선택</div>
-      <div style="width:100%;max-width:400px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
-        ${cats.map(c=>`<button style="padding:10px 16px;border-radius:var(--radius-lg);border:1.5px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer" onclick="startCatQuiz('${c}')">${c}</button>`).join('')}
-      </div>`;
-    return;
-  }
-  qIdx=0;qScore=0;qTotal=0;qFlipped=false;
-  if(qMode==='random') qWords.forEach(w=>w._dir=Math.random()>.5?'kr':'vn');
-  renderCard();
-}
-
-function startCatQuiz(cat){
-  qWords=words.filter(w=>w.cat===cat).sort(()=>Math.random()-.5);
-  qIdx=0;qScore=0;qTotal=0;qFlipped=false;qMode='kr2vn';
-  renderCard();
-}
-
-function renderCard(){
-  if(qIdx>=qWords.length){renderResult();return;}
-  const w=qWords[qIdx];
-  let dir=qMode==='kr2vn'?'kr':qMode==='vn2kr'?'vn':(w._dir||'kr');
-  const q=dir==='kr'?w.kr:w.vn;
-  const a=dir==='kr'?w.vn:w.kr;
-  const qLabel=dir==='kr'?'한국어':'베트남어';
-  const aLabel=dir==='kr'?'베트남어':'한국어';
-  const showPron=dir==='vn'&&w.pron;
-  const pct=Math.round(qIdx/qWords.length*100);
-  document.getElementById('quizWrap').innerHTML=`
-    <div class="quiz-top" style="width:100%;max-width:400px">
-      <span class="quiz-progress-txt">${qIdx+1} / ${qWords.length}</span>
-      <span class="quiz-score-txt">✅${qScore} ❌${qTotal-qScore}</span>
-    </div>
-    <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
-    <div class="flashcard" onclick="flipCard()" id="fc">
-      <div class="card-hint">${qLabel}로 뭐라고 할까요?</div>
-      <div class="card-q">${esc(q)}</div>
-      ${showPron?`<div class="card-pron">[ ${esc(w.pron)} ]</div>`:''}
-      <div class="card-tap" id="ctap">탭해서 정답 확인 →</div>
-      <div class="card-ans" id="cans" style="display:none">${esc(a)}</div>
-      <div class="card-ans-pron" id="capron" style="display:none">${dir==='kr'&&w.pron?'[ '+esc(w.pron)+' ]':''}</div>
-      <div style="font-size:10px;color:var(--text3);margin-top:6px;display:none" id="ccat">${w.cat}</div>
-    </div>
-    <div id="qbtns" style="display:none;width:100%;max-width:400px">
-      <div class="quiz-btns">
-        <button class="qbtn wrong" onclick="answerQ(false)">❌ 틀렸어요</button>
-        <button class="qbtn correct" onclick="answerQ(true)">✅ 맞았어요</button>
-      </div>
-    </div>`;
-}
-
-function flipCard(){
-  document.getElementById('ctap').style.display='none';
-  document.getElementById('cans').style.display='block';
-  document.getElementById('capron').style.display='block';
-  document.getElementById('ccat').style.display='block';
-  document.getElementById('qbtns').style.display='block';
-  qFlipped=true;
-}
-
-function answerQ(correct){
-  qTotal++;if(correct)qScore++;
-  qIdx++;qFlipped=false;renderCard();
-}
-
-function renderResult(){
-  const pct=qTotal?Math.round(qScore/qTotal*100):0;
-  const emoji=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':pct>=30?'💪':'📚';
-  const msg=pct>=90?'완벽해요!':pct>=70?'잘했어요!':pct>=50?'좋아요!':pct>=30?'더 연습해봐요!':'단어장을 복습해봐요!';
-  document.getElementById('quizWrap').innerHTML=`
-    <div class="quiz-result">
-      <div class="res-emoji">${emoji}</div>
-      <div class="res-score">${qScore} / ${qTotal}</div>
-      <div style="font-size:28px;font-weight:700;color:var(--primary)">${pct}점</div>
-      <div class="res-sub">${msg}</div>
-      <div class="res-btns">
-        <button class="res-btn" style="background:var(--bg2);color:var(--text);border:0.5px solid var(--border2)" onclick="initQuiz()">다시 하기</button>
-        <button class="res-btn" style="background:var(--primary);color:#fff" onclick="showPage('words',document.querySelectorAll('.tab-item')[1])">단어장 보기</button>
-      </div>
-    </div>`;
-}
-
-// ═══════════════════════════════════════════════════════
-// 공통 유틸
-// ═══════════════════════════════════════════════════════
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function closeSheet(id){ document.getElementById(id).classList.remove('open'); }
-
-// 시트 바깥 클릭 닫기
-['nickOverlay','wordOverlay'].forEach(id=>{
-  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeSheet(id);});
+// ════════════════════════════════════════════════════
+// 유틸
+// ════════════════════════════════════════════════════
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function esq(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function closeOv(id){document.getElementById(id).classList.remove('open');}
+['ov-nick','ov-word','ov-phrase'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)closeOv(id);});
 });
-
-// 검색 드롭다운 바깥 클릭
 document.addEventListener('click',e=>{
-  if(!e.target.closest('.word-search-wrap'))
-    document.getElementById('searchDd').classList.remove('open');
+  if(!e.target.closest('.wsw'))document.getElementById('sdd').classList.remove('open');
 });
 
-// ═══════════════════════════════════════════════════════
-// 초기 실행
-// ═══════════════════════════════════════════════════════
-// 칩 닉네임 초기화
+// 초기
 document.getElementById('chip-me').textContent=nicks.me;
 document.getElementById('chip-other').textContent=nicks.other;
-renderMsgs();
-scrollBot();
+renderHome();renderMsgs();
 </script>
 </body>
 </html>
