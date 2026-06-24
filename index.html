@@ -866,16 +866,26 @@ function sendMsg(){
   msgs.push({id:nid(),who,text,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),trans:null,reactions:{}});
   sc();inp.value='';inp.style.height='auto';renderMsgs();scrollBot();
 }
+// 한↔베 번역: 1차 Google gtx, 실패 시 MyMemory로 자동 폴백
+async function transText(text){
+  const hasKr=/[가-힣]/.test(text);
+  const sl=hasKr?'ko':'vi', tl=hasKr?'vi':'ko';
+  try{
+    const r=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`);
+    if(r.ok){const d=await r.json();const t=d[0]?.map(x=>x[0]).join('');if(t)return t;}
+  }catch{}
+  try{
+    const r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sl}|${tl}`);
+    if(r.ok){const d=await r.json();const t=d?.responseData?.translatedText;if(t&&d.responseStatus===200)return t;}
+  }catch{}
+  return null;
+}
 async function translateMsg(id){
   const m=msgs.find(x=>x.id===id);if(!m)return;
   if(m.trans){m.trans=null;sc();renderMsgs();return;}
   m.trans='__loading__';sc();renderMsgs();
-  try{
-    const hasKr=/[가-힣]/.test(m.text);
-    const res=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${hasKr?'ko':'vi'}&tl=${hasKr?'vi':'ko'}&dt=t&q=${encodeURIComponent(m.text)}`);
-    const d=await res.json();
-    m.trans=d[0]?.map(x=>x[0]).join('')||'번역 결과 없음';
-  }catch{m.trans='번역할 수 없어요';}
+  const t=await transText(m.text);
+  m.trans=t||'번역할 수 없어요';
   sc();renderMsgs();
 }
 function togReact(mid,emoji){
@@ -961,8 +971,7 @@ async function doSearch(q){
   const dd=document.getElementById('sdd');
   try{
     const hasKr=/[가-힣]/.test(q);
-    const res=await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${hasKr?'ko':'vi'}&tl=${hasKr?'vi':'ko'}&dt=t&q=${encodeURIComponent(q)}`);
-    const d=await res.json();const trans=d[0]?.map(x=>x[0]).join('')||'';
+    const trans=await transText(q)||'';
     if(!trans){dd.classList.remove('open');return;}
     const kr=hasKr?q:trans,vn=hasKr?trans:q;
     const have=words.find(w=>w.kr===kr||w.vn===vn);
